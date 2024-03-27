@@ -34,25 +34,44 @@ const CreateReservationPage = ({ params }: { params: { id: string } }) => {
         if (!session?.user.token) return;
 
         try {
-            console.log('formData:', formData);
+
+            if (formData.arrivalTime > restaurantData?.closeTime) {
+                alert('Restaurant is closed at this time');
+                return;
+            }
+            if (formData.arrivalTime < restaurantData?.openTime) {
+                alert('Restaurant is not open at this time');
+                return;
+            }
+
+            if (formData.leaveTime < restaurantData?.openTime) {
+                alert('Restaurant is not open at this time');
+                return;
+            }
+
+            if (formData.leaveTime > restaurantData?.closeTime) {
+                alert('Restaurant is closed at this time');
+                return;
+            }
+
             const request: createReservationRequest = {
                 dateTime: formData.arrivalTime,
                 restaurantId: parseInt(params.id),
                 tableNum: parseInt(formData.tableNumber),
                 exitTime: formData.leaveTime,
             };
-            console.log('Reservation request:', request);
             const response = await createReservation(
                 session.user.token,
                 request
             );
             console.log('Reservation successful:', response);
-        } catch (error) {
-            console.error('Reservation error:', error);
-        } finally {
             router.push(
                 '/complete/Your-Reservation-has-been-Create/reservation'
             );
+        } catch (error) {
+            console.error('Reservation error:', error);
+        } finally {
+            setIsPopupOpen(false);
         }
     };
 
@@ -113,6 +132,7 @@ const CreateReservationPage = ({ params }: { params: { id: string } }) => {
                                 placeholder="e.g. 4"
                                 className="bg-gray-50 border-2 font-light text-md border-gray-200 text-gray-900 rounded-2xl focus:ring-redrice-yellow focus:border-redrice-yellow block w-full px-3 py-1"
                                 required
+                                max={10}
                                 onChange={handleInputChange}
                             />
                         </div>

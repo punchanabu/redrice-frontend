@@ -34,21 +34,37 @@ const UpdateReservationPage = ({ params }: { params: { id: string } }) => {
     };
 
     const onConfirm = async () => {
-        console.log('reservation data:', reservationData);
+
         if (!session?.user.token) return;
         try {
+            if (reservationData.arrivalTime > reservationData.restaurant.closeTime) {
+                alert('Restaurant is closed at this time');
+                return;
+            }
+            if (reservationData.arrivalTime < reservationData.restaurant.openTime) {
+                alert('Restaurant is not open at this time');
+                return;
+            }
+            if (reservationData.leaveTime < reservationData.restaurant.openTime) {
+                alert('Restaurant is not open at this time');
+                return;
+            }
+            if (reservationData.leaveTime > reservationData.restaurant.closeTime) {
+                alert('Restaurant is closed at this time');
+                return;
+            }
             const data = await updateReservation(session?.user.token, params.id, 
                 reservationData.arrivalTime,
                 parseInt(reservationData.tableNumber),
                 reservationData.leaveTime,
             );
+            router.push(
+                '/complete/Your-Reservation-has-been-Updated/reservation'
+            );
         } catch (error) {
             console.error('Failed to update reservation:', error);
         } finally {
             setModalOpen(false);
-            router.push(
-                '/complete/Your-Reservation-has-been-Updated/reservation'
-            );
         }
     };
 
