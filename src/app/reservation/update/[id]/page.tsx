@@ -37,12 +37,12 @@ const UpdateReservationPage = ({ params }: { params: { id: string } }) => {
 
         if (!session?.user.token) return;
         try {
-            if (reservationData.tableNumber < 1) {
-                alert('Table number must be greater than 0');
+            if (reservationData.tableNumber > 10) {
+                alert('Table number must be less than 10');
                 return;
             }
-            if (reservationData.arrivalTime > reservationData.restaurant.closeTime) {
-                alert('Restaurant is closed at this time');
+            if (reservationData.tableNumber < 0) {
+                alert('Table number must be greater than 0');
                 return;
             }
             if (reservationData.arrivalTime < reservationData.restaurant.openTime) {

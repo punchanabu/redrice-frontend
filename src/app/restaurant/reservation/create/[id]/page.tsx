@@ -34,7 +34,14 @@ const CreateReservationPage = ({ params }: { params: { id: string } }) => {
         if (!session?.user.token) return;
 
         try {
-
+            if (parseInt(formData.tableNumber) > 10 ) {
+                alert('Table number must be less than 10');
+                return;
+            }
+            if (parseInt(formData.tableNumber) < 0) {
+                alert('Table number must be greater than 0');
+                return;
+            }
             if (formData.arrivalTime > restaurantData?.closeTime) {
                 alert('Restaurant is closed at this time');
                 return;
