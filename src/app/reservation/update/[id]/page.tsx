@@ -37,6 +37,10 @@ const UpdateReservationPage = ({ params }: { params: { id: string } }) => {
 
         if (!session?.user.token) return;
         try {
+            if (reservationData.tableNumber < 1) {
+                alert('Table number must be greater than 0');
+                return;
+            }
             if (reservationData.arrivalTime > reservationData.restaurant.closeTime) {
                 alert('Restaurant is closed at this time');
                 return;
