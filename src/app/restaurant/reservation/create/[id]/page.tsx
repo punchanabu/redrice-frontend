@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import ConfirmReserve from '@/components/ConfirmReserve';
 import { getRestaurantById } from '@/lib/restaurant';
-import { createReservation } from '@/lib/reservation';
+import { createReservation, getMyReservations } from '@/lib/reservation';
 import { createReservationRequest } from '@/lib/reservation';
 import { CircularProgress } from '@mui/material';
 
@@ -32,8 +32,13 @@ const CreateReservationPage = ({ params }: { params: { id: string } }) => {
     const router = useRouter();
     const onConfirm = async () => {
         if (!session?.user.token) return;
-
+        
         try {
+            const getMyReservationsResponse = await getMyReservations(session.user.token);
+            if (getMyReservationsResponse.length > 3) {
+                alert('You have 3 reservations already');
+                return;
+            }
             if (parseInt(formData.tableNumber) > 10 ) {
                 alert('Table number must be less than 10');
                 return;

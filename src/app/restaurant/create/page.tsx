@@ -38,6 +38,7 @@ const CreateReservationPage = () => {
         try {
             if (session?.user?.token) {
                 console.log(session.user.role);
+                
                 const response = await createRestaurant(
                     formData,
                     session.user.token
