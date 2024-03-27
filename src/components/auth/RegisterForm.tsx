@@ -37,6 +37,10 @@ const RegisterForm: React.FC = () => {
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
+            if (!formData.name || !formData.email || !formData.telephone || !formData.password) {
+                alert('Please fill in all fields');
+                return;
+            }
             const response = await register(formData);
             console.log('register successful:', response);
             router.push('/auth/login')
