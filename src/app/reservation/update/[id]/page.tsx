@@ -3,7 +3,7 @@ import React from 'react';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
-import { updateReservation } from '@/lib/reservation';
+import { getMyReservations, updateReservation } from '@/lib/reservation';
 import { useRouter } from 'next/navigation';
 import ConfirmCreateRes from '@/components/ConfirmCreateRes';
 import { CircularProgress } from '@mui/material';
@@ -18,6 +18,10 @@ const UpdateReservationPage = ({ params }: { params: { id: string } }) => {
     useEffect(() => {
         const fetchReservationData = async () => {
             if (!session?.user.token || !params.id) return;
+            const me = await getMyReservations(session.user.token);
+            if (me.length === 3) {
+                alert('You can only have 3 reservations at a time');
+            }
             const data = await getReservation(session.user.token, params.id);
             setreservationData(data);
         };
