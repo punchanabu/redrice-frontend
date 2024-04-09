@@ -38,7 +38,7 @@ const Searchbox = () => {
                 placeholder="Search"
                 value={searchQuery}
                 onChange={handleSearchQueryChange}
-                className="outline-none border-none ml-3 bg-slate-50"
+                className="w-full outline-none border-none ml-3 bg-slate-50"
             />
         </div>
     );
