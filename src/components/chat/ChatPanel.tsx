@@ -113,7 +113,7 @@ export default function ChatPanel(){
             </div>
             <div className="h-10 w-[98%] wborder-slate-300 flex items-center gap-4 p-1 rounded-full bg-slate-100 mr-10 absolute left-[1%] bottom-[2%]">
     
-                <textarea id="textarea" value={message} onChange={(event) => (setMessage(event.target.value))}   placeholder="Write Something" className="w-[90%] h-full text-md text-slate-300 bg-slate-100 rounded-lg outline-none focus:text-black px-6 py-1 resize-none overflow-hidden"/>
+                <textarea id="textarea" value={message} onChange={(event) => (setMessage(event.target.value))}   placeholder="Write Something" className="w-[80%] h-full text-md text-slate-300 bg-slate-100 rounded-lg outline-none focus:text-black px-6 py-1 resize-none overflow-hidden"/>
            
                 {selectedImage && (
                     <div className="mt-2">

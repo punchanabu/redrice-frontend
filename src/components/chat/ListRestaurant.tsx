@@ -21,8 +21,8 @@ export default function ListRestaurant() {
                                 <Image
                                 src={ '/img/user/user1.png'}
                                 alt="Product Picture"
-                                width={70}
-                                height={70}
+                                width={60}
+                                height={60}
                                 className="h-full object-contain rounded-full flex items-center "
                                     />
                               
