@@ -29,7 +29,7 @@ export default function ChatPanel(){
             className="h-full object-contain rounded-full flex items-center "
                 /> 
             <h1 className="text-2xl semi-bold">{'Pizza Hutz  1150'}</h1>   
-            <div className={`w-[10px] h-[10px] rounded-full ${getBackgroundColor()} `}></div>                           
+            <div className={`w-[10px] h-[10px] rounded-full ${getBackgroundColor()} ${state? 'animate-ping':''} `}></div>                           
             </div>
             <div className="w-full h-[calc(100%-136px)] py-2 px-4">
                 <div className="w-full h-full overflow-x-auto flex flex-col items-center gap-3">
@@ -63,7 +63,7 @@ export default function ChatPanel(){
 
                     <div className="w-full  flex gap-2 justify-end">
                         
-                        <h1 className="tablet:w-1/2 w-[70%] bg-slate-100 rounded-lg p-3">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestias, laudantium itaque suscipit mollitia pariatur vero vel alias voluptas consequatur minima magni, corporis provident corrupti fugiat quos aperiam voluptatum laboriosam rerum.</h1>
+                        <h1 className="tablet:w-1/2 w-[70%] bg-slate-100 rounded-lg p-3">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam perspiciatis in, totam eos aut cumque nostrum consequatur adipisci beatae hic fugit aliquid, eaque, veritatis optio eligendi deserunt aspernatur officiis quas. </h1>
                     </div>
 
                 </div>
