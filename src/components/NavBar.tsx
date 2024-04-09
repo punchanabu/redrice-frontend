@@ -9,6 +9,7 @@ import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { FiLogOut } from 'react-icons/fi';
 import { FaUserAlt } from 'react-icons/fa';
+import { AiFillMessage } from "react-icons/ai";
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [login, setLogin] = useState(false);
@@ -88,6 +89,13 @@ const Navbar = () => {
                                     >
                                         Restaurant
                                     </Link>
+
+                                    <Link href={'/chat'}>
+                                        <div className="relative rounded-full  hover:border-redrice-yellow p-2 text-3xl hover:text-redrice-yellow ">
+                                            <AiFillMessage />
+                                        </div>
+                                    </Link>
+
                                     <Link href={'/profile'}>
                                         <div className="relative rounded-full border-4 border-black hover:border-redrice-yellow p-2 text-2xl hover:text-redrice-yellow">
                                             <FaUserAlt />
@@ -167,6 +175,12 @@ const Navbar = () => {
                             className="text-white block px-3 py-2 text-base font-medium  hover:text-black hover:font-bold ease-in duration-300 border-b-2"
                         >
                             Restaurant
+                        </Link>
+                        <Link
+                            href="/chat"
+                            className="text-white block px-3 py-2 text-base font-medium  hover:text-black hover:font-bold ease-in duration-300 border-b-2"
+                        >
+                            Chat
                         </Link>
                         <button
                             onClick={handleSignOut}
