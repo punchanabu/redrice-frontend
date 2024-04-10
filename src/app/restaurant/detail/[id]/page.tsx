@@ -10,6 +10,7 @@ import { useSession } from 'next-auth/react';
 import Restaurant from '@/types/restaurant';
 import { CircularProgress } from '@mui/material';
 import Link from 'next/link';
+import { Rate } from '@/components/Rate';
 
 const RestaurantDetailPage = ({ params }: { params: { id: string } }) => {
     const [restaurant, setRestaurant] = useState<Restaurant | null>(null);
@@ -33,7 +34,7 @@ const RestaurantDetailPage = ({ params }: { params: { id: string } }) => {
     return (
         <div>
             {restaurant ? (
-                <main className="pl-12 pr-10 w-full h-screen overflow-y-auto">
+                <main className="pl-12 pr-10 w-full h-screen ">
                     <h1 className="text-3xl md:text-4xl font-semibold">
                         {restaurant?.name}
                     </h1>
@@ -49,6 +50,7 @@ const RestaurantDetailPage = ({ params }: { params: { id: string } }) => {
                                 height={384}
                                 className="rounded-2xl"
                             />
+                            
                         </div>
                         <section className="rounded-[1rem] p-5 md:p-10 w-full lg:w-1/2 text-lg shadow-lg border-2 mt-6 lg:mt-0 mb-6 lg:min-h-[600px]">
                             <section className="space-y-2 md:space-y-4">
@@ -110,8 +112,10 @@ const RestaurantDetailPage = ({ params }: { params: { id: string } }) => {
                                     </Link>
                                 </button>
                             </div>
-                        </section>
+                        </section>  
                     </div>
+                    <Rate />
+                    
                 </main>
             ) : (
                 <div className="h-[700px] flex justify-center items-center">
