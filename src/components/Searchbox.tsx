@@ -1,10 +1,13 @@
 import { useState } from 'react';
 import { FaSearch } from 'react-icons/fa';
 import DataFilter from '@/types/searchbox';
-
+import { useEffect } from 'react';
 
 
 const Searchbox = ({data,filter}:{data:Array<DataFilter>,filter:Function}) => {
+    useEffect(()=>{
+        filter(data)
+    },[data])
     // State variables
     const [searchQuery, setSearchQuery] = useState('');
     // Function to handle search query changes
@@ -19,6 +22,7 @@ const Searchbox = ({data,filter}:{data:Array<DataFilter>,filter:Function}) => {
             subdata.name.toLowerCase().includes(query.toLowerCase())
         );
         filter(filtered)
+        console.log(filtered)
     };
 
     return (
@@ -35,6 +39,7 @@ const Searchbox = ({data,filter}:{data:Array<DataFilter>,filter:Function}) => {
                 onChange={handleSearchQueryChange}
                 className="w-full outline-none border-none ml-3 bg-slate-50"
             />
+            
         </div>
     );
 };
