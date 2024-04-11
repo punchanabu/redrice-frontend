@@ -13,9 +13,9 @@ import { CircularProgress } from '@mui/material';
 interface RestaurantCardProps {
     ID: any;
     name: string;
-    imageUrl: string;
-    openTime: string;
-    closeTime: string;
+    imageUrl?: string;
+    openTime?: string;
+    closeTime?: string;
 }
 
 const RestaurantCard = ({
@@ -72,7 +72,7 @@ const RestaurantCard = ({
         >
             <div className="h-[300px]">
                 <Image
-                    src={imageUrl}
+                    src={imageUrl||''}
                     alt="restaurant"
                     width={500}
                     height={500}
