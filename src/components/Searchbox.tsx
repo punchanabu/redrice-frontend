@@ -7,17 +7,17 @@ import { useEffect } from 'react';
 const Searchbox = ({data,filter}:{data:Array<DataFilter>,filter:Function}) => {
     useEffect(()=>{
         filter(data)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[data])
-    // State variables
+    // state variables
     const [searchQuery, setSearchQuery] = useState('');
-    // Function to handle search query changes
+    // function to handle search query changes
     const handleSearchQueryChange = (
         event: React.ChangeEvent<HTMLInputElement>
     ) => {
         const query = event.target.value;
         setSearchQuery(query);
-
-        // Filter restaurants based on search query
+        // filter restaurants based on search query
         const filtered = data.filter((subdata) =>
             subdata.name.toLowerCase().includes(query.toLowerCase())
         );
