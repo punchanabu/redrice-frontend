@@ -39,15 +39,15 @@ const RestaurantDetailPage = ({ params }: { params: { id: string } }) => {
                         {restaurant?.name}
                     </h1>
                     <div className="w-full lg:gap-10 flex flex-row items-center flex-wrap lg:flex-nowrap">
-                        <div className="w-full lg:w-1/2 flex justify-center mt-5 lg:mt-0">
+                        <div className="w-full h-[300px] md:h-[500px] lg:w-1/2 flex justify-center mt-5 lg:mt-0">
                             <Image
                                 src={
                                     restaurant?.imageUrl ||
                                     '/img/downloadPic.jpeg'
                                 }
                                 alt={restaurant?.name || 'Restaurant Image'}
-                                width={527}
-                                height={384}
+                                width={500}
+                                height={500}
                                 className="rounded-2xl"
                             />
                             
