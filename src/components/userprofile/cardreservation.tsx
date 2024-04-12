@@ -17,7 +17,7 @@ export default function CardReservation({
 
     const [isOpen, setIsOpen] = useState(false);
     const [reviewText, setReviewText] = useState('');
-    const [rating, setRating] = useState(0); 
+    const [rating, setRating] = useState<number | null>(null); 
 
     const openForm = () => {
         setIsOpen(true);
@@ -83,17 +83,19 @@ export default function CardReservation({
                         {/* Rating component */}
                         <div className="mb-4 text-center">
                             <Rating
-                                rating={rating}
-                                onClick={(value) => setRating(value)}
-                                required
+                                value={rating}
+                                onChange = {(event,newValue) => {
+                                    if ( newValue !== null )
+                                        setRating(newValue)
+                                }}
                                 className="inline-block"
                             />
                         </div>
                         
                         {/* Review textarea */}
                         <textarea
-                            rows="4"
-                            cols="50"
+                            rows={4}
+                            cols={50}
                             value={reviewText}
                             onChange={(e) => setReviewText(e.target.value)}
                             placeholder="Write your review here..."
