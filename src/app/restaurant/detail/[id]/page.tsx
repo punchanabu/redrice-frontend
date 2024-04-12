@@ -110,7 +110,9 @@ const RestaurantDetailPage = ({ params }: { params: { id: string } }) => {
                             </div>
                         </section>
                     </div>
-                    <Rate />
+                    <div className="pb-10">
+                        <Rate />
+                    </div>
                 </main>
             ) : (
                 <div className="h-[700px] flex justify-center items-center">
