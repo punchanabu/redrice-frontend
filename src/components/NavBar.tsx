@@ -68,7 +68,7 @@ const Navbar = () => {
                         </div>
                         {login ? (
                             <div className="hidden sm:block">
-                                <div className="flex space-x-4 gap-6 items-center justify-center h-full">
+                                <div className="flex space-x-4 gap-3 lg:gap-6 items-center justify-center h-full">
                                     {userRole === 'admin' && (
                                         <Link
                                             href="/admin/manage"
