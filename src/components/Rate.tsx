@@ -161,7 +161,6 @@ export function Rate() {
                                         value={review.rating}
                                         readOnly
                                     />
-
                                     <h4 className="pt-3">{review.comment}</h4>
                                 </div>
                             </div>
