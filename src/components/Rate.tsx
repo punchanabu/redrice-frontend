@@ -111,7 +111,7 @@ export function Rate() {
 
 
     return (
-        <div className="rounded-[1rem] p-5 md:p-10 w-full lg:w-1/2 shadow-lg border-2 my-6">
+        <div className="rounded-[1rem] p-5 md:p-10 w-full shadow-lg border-2 my-3">
             <div className="flex flex-wrap space-y-4 md:space-y-0">
                 <div className="w-full md:w-1/4 flex flex-col justify-center items-center md:pr-5">
                     <h1 className="text-5xl font-semibold text-center">

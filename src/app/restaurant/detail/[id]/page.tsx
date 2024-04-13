@@ -13,6 +13,7 @@ import { CircularProgress } from '@mui/material';
 import Link from 'next/link';
 import { Rate } from '@/components/Rate';
 import { FaFacebook } from 'react-icons/fa';
+import { MdOutlineEmail } from 'react-icons/md';
 
 const RestaurantDetailPage = ({ params }: { params: { id: string } }) => {
     const [restaurant, setRestaurant] = useState<Restaurant | null>(null);
@@ -37,11 +38,19 @@ const RestaurantDetailPage = ({ params }: { params: { id: string } }) => {
         <div>
             {restaurant ? (
                 <main className="pl-12 pr-10 w-full h-screen ">
-                    <h1 className="text-3xl md:text-4xl font-semibold">
-                        {restaurant?.name}
-                    </h1>
                     <div className="w-full lg:gap-10 flex flex-row items-center flex-wrap lg:flex-nowrap">
-                        <div className="w-full h-[300px] md:h-[500px] lg:w-1/2 flex justify-center mt-5 lg:mt-0">
+                        <div className="w-full h-[300px] md:h-[500px] lg:w-1/2 flex justify-center mt-5 lg:mt-0 flex-col gap-4 lg:gap-10 items-center mb-6">
+                            <div className="flex space-x-4">
+                                <h1 className="text-3xl md:text-4xl font-semibold">
+                                    {restaurant?.name}
+                                </h1>
+                                <button className="px-4 py-1 rounded-full bg-redrice-yellow hover:bg-redrice-light-yellow text-white flex flex-row items-center gap-2 font-medium">
+                                    <MdOutlineEmail />
+                                    <p className="hidden md:block">
+                                        Send message
+                                    </p>
+                                </button>
+                            </div>
                             <Image
                                 src={
                                     restaurant?.imageUrl ||
@@ -50,7 +59,7 @@ const RestaurantDetailPage = ({ params }: { params: { id: string } }) => {
                                 alt={restaurant?.name || 'Restaurant Image'}
                                 width={500}
                                 height={500}
-                                className="rounded-2xl"
+                                className="rounded-2xl shadow-xl"
                             />
                         </div>
                         <section className="rounded-[1rem] p-5 md:p-10 w-full lg:w-1/2 text-lg shadow-lg border-2 mt-6 lg:mt-0 mb-6 lg:min-h-[600px]">
