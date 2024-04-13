@@ -60,9 +60,7 @@ const RestaurantCardReload = ({
                     <Rating name="read-only" value={5} readOnly className='animate-pulse '/>
                     <div className="space-x-1 items-center flex justify-center">
                         <button className="px-4 py-1 bg-redrice-yellow hover:bg-redrice-light-yellow text-white font-semibold rounded-md animate-pulse ">
-                            <Link href={`/restaurant/detail/${ID}`}>
                                 Detail
-                            </Link>
                         </button>
                         {userRole === 'admin' && (
                             <div>
