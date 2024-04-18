@@ -16,6 +16,7 @@ interface RestaurantCardProps {
     imageUrl?: string;
     openTime?: string;
     closeTime?: string;
+    rating?: number;
 }
 
 const RestaurantCard = ({
@@ -24,6 +25,7 @@ const RestaurantCard = ({
     imageUrl,
     openTime,
     closeTime,
+    rating,
 }: RestaurantCardProps) => {
     const [userRole, setUserRole] = useState('');
     const [restaurant, setRestaurant] = useState('');
@@ -88,7 +90,7 @@ const RestaurantCard = ({
                     </p>
                 </div>
                 <div className="mt-auto mb-4 flex justify-between items-center">
-                    <Rating name="read-only" value={5} readOnly />
+                    <Rating name="read-only" value={rating} precision={0.5} readOnly />
                     <div className="space-x-1 items-center flex justify-center">
                         <button className="px-4 py-1 bg-redrice-yellow hover:bg-redrice-light-yellow text-white font-semibold rounded-md">
                             <Link href={`/restaurant/detail/${ID}`}>

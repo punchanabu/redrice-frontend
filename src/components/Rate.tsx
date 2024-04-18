@@ -4,102 +4,88 @@ import { Rating } from '@mui/material';
 import Image from 'next/image';
 import { useState } from 'react';
 import RatingChart from './RatingChart';
+import { useSession } from 'next-auth/react';
+import { getAllComments } from '@/lib/getComments';
+import { useEffect } from 'react';
+import { FaUserAlt } from 'react-icons/fa';
 
+interface Comment {
+    restaurantId: number;
+    rating: number;
+    myComment: string;
+    user: {
+        name: string;
+    };
+    // restaurant: {
+    //     imageUrl: string;
+    // };
+}
 export function Rate() {
     // setup rating
-    //const [average, setAverage] = useState<number | null>(4.5);
+    const [comments, setComments] = useState<any | null>([]);
+    const [sum, setSum] = useState(0);
+    const [averageRating, setAverageRating] = useState(0);
+    const [rate5, setRate5] = useState(0);
+    const [rate4, setRate4] = useState(0);
+    const [rate3, setRate3] = useState(0);
+    const [rate2, setRate2] = useState(0);
+    const [rate1, setRate1] = useState(0);
 
-    const reviews = [
-        {
-            userName: 'Jorpor eiei',
-            profilePic: '/img/profile.svg',
-            rating: 5,
-            comment: 'อร่อยไม่ซ้ำ จำสูตรไม่ได้',
-        },
-        {
-            userName: 'Jorpor eiei',
-            profilePic: '/img/profile.svg',
-            rating: 3,
-            comment: 'รสชาติเยี่ยม',
-        },
-        {
-            userName: 'Jorpor eiei',
-            profilePic: '/img/profile.svg',
-            rating: 2,
-            comment: 'คุ้มค่า',
-        },
-        {
-            userName: 'Jorpor eiei',
-            profilePic: '/img/profile.svg',
-            rating: 5,
-            comment: 'อร่อยไม่ซ้ำ จำสูตรไม่ได้',
-        },
-        {
-            userName: 'Jorpor eiei',
-            profilePic: '/img/profile.svg',
-            rating: 3,
-            comment: 'รสชาติเยี่ยม',
-        },
-        {
-            userName: 'Jorpor eiei',
-            profilePic: '/img/profile.svg',
-            rating: 4,
-            comment: 'คุ้มค่า',
-        },
-        {
-            userName: 'Jorpor eiei',
-            profilePic: '/img/profile.svg',
-            rating: 5,
-            comment: 'อร่อยไม่ซ้ำ จำสูตรไม่ได้',
-        },
-        {
-            userName: 'Jorpor eiei',
-            profilePic: '/img/profile.svg',
-            rating: 3,
-            comment: 'รสชาติเยี่ยม',
-        },
-        {
-            userName: 'Jorpor eiei',
-            profilePic: '/img/profile.svg',
-            rating: 2,
-            comment: 'คุ้มค่า',
-        },
-        {
-            userName: 'Jorpor eiei',
-            profilePic: '/img/profile.svg',
-            rating: 5,
-            comment: 'อร่อยไม่ซ้ำ จำสูตรไม่ได้',
-        },
-        {
-            userName: 'Jorpor eiei',
-            profilePic: '/img/profile.svg',
-            rating: 3,
-            comment: 'รสชาติเยี่ยม',
-        },
-        {
-            userName: 'Jorpor eiei',
-            profilePic: '/img/profile.svg',
-            rating: 1,
-            comment: 'คุ้มค่า',
-        },
+    const { data: session } = useSession();
 
-    ];
+    useEffect(() => {
+        const fetchComments = async () => {
+            if (session?.user.token) {
+                const fetchedComments = await getAllComments(session.user.token);
+                setComments(fetchedComments);
+            }
+        };
+        
+        if (session?.user.token) {
+            fetchComments();
+        }
+    }, [session?.user.token]);
 
+    useEffect(() => {
+        if (!comments) return;
 
+        const totalCount = comments.length;
+        let sum = 0;
+        const ratingCounts = [0, 0, 0, 0, 0];
 
-    
-    const sum = reviews.reduce((acc, review) => acc + review.rating, 0);
-    
-    const averageRating = (sum / reviews.length).toFixed(1);
-    
-    const rate5 = reviews.filter((review) => review.rating === 5).length/ reviews.length*100;
-    const rate4 = reviews.filter((review) => review.rating === 4).length/ reviews.length*100;
-    const rate3 = reviews.filter((review) => review.rating === 3).length/ reviews.length*100;
-    const rate2 = reviews.filter((review) => review.rating === 2).length/ reviews.length*100;
-    const rate1 = reviews.filter((review) => review.rating === 1).length/ reviews.length*100;
-    
-    console.log(rate5);
+        comments.forEach((comment: Comment) => {
+            sum += comment.rating;
+            const rating = Math.floor(comment.rating); //ปัดเศษ
+            ratingCounts[rating - 1]++;
+        });
 
+        setSum(sum);
+        const averageRating = (sum / totalCount).toFixed(1);
+        setAverageRating(Number(averageRating));
+
+        for (let i = 0; i < 5; i++) {
+            const rate = (ratingCounts[i] / totalCount) * 100;
+            switch (i) {
+                case 0:
+                    setRate1(rate);
+                    break;
+                case 1:
+                    setRate2(rate);
+                    break;
+                case 2:
+                    setRate3(rate);
+                    break;
+                case 3:
+                    setRate4(rate);
+                    break;
+                case 4:
+                    setRate5(rate);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }, [comments]);
 
     const ratingData = [
         { label: '5', percentage: rate5 },
@@ -108,8 +94,11 @@ export function Rate() {
         { label: '2', percentage: rate2 },
         { label: '1', percentage: rate1 },
     ];
-
-
+    console.log(rate5)
+    console.log(rate4)
+    console.log(rate3)
+    console.log(rate2)
+    console.log(rate1)
     return (
         <div className="rounded-[1rem] p-5 md:p-10 w-full shadow-lg border-2 my-3">
             <div className="flex flex-wrap space-y-4 md:space-y-0">
@@ -141,27 +130,29 @@ export function Rate() {
 
             <div className="mx-2 overflow-y-auto h-52">
                 <div className="">
-                    {reviews.map((review, index) => (
+                    {comments.map((review: Comment, index: number) => (
                         <>
                             <div
                                 key={index}
                                 className="flex items-center border-b-2"
                             >
-                                <Image
-                                    src={review.profilePic}
-                                    alt={`Profile picture of ${review.userName}`}
+                                {/* <Image
+                                    src={review.restaurant.imageUrl}
+                                    alt={`Profile picture of ${review.user.name}`}
                                     width={50}
                                     height={50}
                                     className="object-cover rounded-full"
-                                />
+                                /> */}
+
+                                <FaUserAlt className="text-2xl mr-4 ml-2" />
                                 <div className="flex flex-col mx-4 my-4">
-                                    <h4>{review.userName}</h4>
+                                    <h4>{review.user.name}</h4>
                                     <Rating
                                         size="small"
                                         value={review.rating}
                                         readOnly
                                     />
-                                    <h4 className="pt-3">{review.comment}</h4>
+                                    <h4 className="pt-3">{review.myComment}</h4>
                                 </div>
                             </div>
                         </>
