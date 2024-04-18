@@ -7,7 +7,6 @@ import { authOptions } from '@/utils/authOption';
 import { getme } from '@/lib/auth';
 import { getReservationByIdUser } from '@/lib/reservation';
 import { CircularProgress } from '@mui/material';
-
 export default async function me() {
     const session = await getServerSession(authOptions);
     if (!session || !session.user.token) {
