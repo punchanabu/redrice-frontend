@@ -1,27 +1,34 @@
 'use client';
 import Rating from '@mui/material/Rating';
+import { getSession, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useState } from 'react';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { IoCloseCircleSharp } from 'react-icons/io5';
+import { createCommentAndRating } from '@/lib/comment';
 export default function CardReservation({
     id,
     name,
     time,
     picture,
+    restaurantId
 }: {
     id: string;
     name: string;
+    restaurantId: any;
     time: string;
     picture: string;
 }) {
+
+    const { data: session } = useSession();
+
     const [isOpen, setIsOpen] = useState(false);
 
     // send comment to backend
     const [reviewText, setReviewText] = useState('');
 
     // send rating to backend
-    const [rating, setRating] = useState<number | null>(null);
+    const [rating, setRating] = useState<number>(0);
 
     const openForm = () => {
         setIsOpen(true);
@@ -32,15 +39,36 @@ export default function CardReservation({
         setReviewText('');
     };
 
-    const handleReviewSubmit = () => {
+    const handleReviewSubmit = async () => {
         // Perform actions here when submitting review text
+        
+        if (!session?.user.token)
+            return;
+        if(rating === 0){
+            alert("Please select a rating")
+            return;
+        }
+        if(reviewText === ''){
+            alert("Please enter a review")
+            return;
+        }
+        try{
+            await createCommentAndRating(session?.user.token, {
+                myComment: reviewText,
+                rating: rating,
+                restaurantId: Number(restaurantId),
+            })
+        }
+        catch (error) {
+            console.error('Comment error:', error);
+        }
+
         console.log('Submitted review:', reviewText);
         // Close the form after submitting (optional)
         closeForm();
     };
 
     var createAt = new Date(time);
-    console.log(time);
     const hour = (parseInt(time.split('T')[1].split(':')[0]) + 7) % 24;
     const minute = parseInt(time.split('T')[1].split(':')[1]);
     const newDate =

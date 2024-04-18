@@ -11,6 +11,8 @@ import { createReservationRequest } from '@/lib/reservation';
 import { CircularProgress } from '@mui/material';
 
 const CreateReservationPage = ({ params }: { params: { id: string } }) => {
+
+    
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const { data: session } = useSession();
     const [restaurantData, setRestaurantData] = useState<any>();
