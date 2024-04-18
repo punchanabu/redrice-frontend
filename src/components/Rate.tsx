@@ -22,40 +22,46 @@ interface Comment {
 }
 export function Rate() {
     // setup rating
-    //const [average, setAverage] = useState<number | null>(4.5);
     const [comments, setComments] = useState<any | null>([]);
+    const [sum, setSum] = useState(0);
+    const [averageRating, setAverageRating] = useState(0);
+    const [rate5, setRate5] = useState(0);
+    const [rate4, setRate4] = useState(0);
+    const [rate3, setRate3] = useState(0);
+    const [rate2, setRate2] = useState(0);
+    const [rate1, setRate1] = useState(0);
 
     const { data: session } = useSession();
-    if (!session?.user.token) return;
 
-    //const comments = await getAllComments(session.user.token);
     useEffect(() => {
         const fetchComments = async () => {
-            const comments = await getAllComments(session.user.token);
-            setComments(comments);
-            // console.log('comments check : ', comments);
+            if (session?.user.token) {
+                const fetchedComments = await getAllComments(session.user.token);
+                setComments(fetchedComments);
+            }
         };
-        fetchComments();
-        if (!comments) return;
-    }, [session.user.token]);
+        
+        if (session?.user.token) {
+            fetchComments();
+        }
+    }, [session?.user.token]);
 
-    const calculate = () => {
+    useEffect(() => {
+        if (!comments) return;
+
         const totalCount = comments.length;
         let sum = 0;
         const ratingCounts = [0, 0, 0, 0, 0];
 
         comments.forEach((comment: Comment) => {
             sum += comment.rating;
-            const rating = Math.floor(comment.rating); // ปัดเลข
+            const rating = Math.floor(comment.rating); //ปัดเศษ
             ratingCounts[rating - 1]++;
         });
 
         setSum(sum);
         const averageRating = (sum / totalCount).toFixed(1);
         setAverageRating(Number(averageRating));
-        
-        
-        
 
         for (let i = 0; i < 5; i++) {
             const rate = (ratingCounts[i] / totalCount) * 100;
@@ -79,20 +85,7 @@ export function Rate() {
                     break;
             }
         }
-    };
-
-    useEffect(() => {
-        if (!comments) return;
-        calculate();
     }, [comments]);
-
-    const [sum, setSum] = useState(0);
-    const [averageRating, setAverageRating] = useState(0);
-    const [rate5, setRate5] = useState(0);
-    const [rate4, setRate4] = useState(0);
-    const [rate3, setRate3] = useState(0);
-    const [rate2, setRate2] = useState(0);
-    const [rate1, setRate1] = useState(0);
 
     const ratingData = [
         { label: '5', percentage: rate5 },
@@ -101,12 +94,11 @@ export function Rate() {
         { label: '2', percentage: rate2 },
         { label: '1', percentage: rate1 },
     ];
-    // console.log('xxx' + rate5);
-    // console.log('xxx' + rate4);
-    // console.log('xxx' + rate3);
-    // console.log('xxx' + rate2);
-    // console.log('xxx' + rate1);
-
+    console.log(rate5)
+    console.log(rate4)
+    console.log(rate3)
+    console.log(rate2)
+    console.log(rate1)
     return (
         <div className="rounded-[1rem] p-5 md:p-10 w-full shadow-lg border-2 my-3">
             <div className="flex flex-wrap space-y-4 md:space-y-0">
