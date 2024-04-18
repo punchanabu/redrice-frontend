@@ -5,6 +5,7 @@ import Image from "next/image";
 import {  useState } from "react";
 import UploadImage from "../UploadImage";
 import { IoIosArrowBack } from "react-icons/io";
+import { useRef } from "react";
 
 
 export default function ChatPanel({setroomid}:{setroomid:Function}){
@@ -51,7 +52,12 @@ export default function ChatPanel({setroomid}:{setroomid:Function}){
     //     reader.readAsDataURL(file);
     //   };
 
+    const textareaRef = useRef(null);
 
+    
+
+    
+    
         
 
     return(
@@ -122,7 +128,7 @@ export default function ChatPanel({setroomid}:{setroomid:Function}){
                 
             </div>
             <div className="h-10 w-[98%] wborder-slate-300 flex items-center gap-4 p-1 rounded-full bg-slate-100 mr-10 absolute left-[1%] bottom-[2%]">
-                <textarea id="textarea" value={message} onChange={(event) => (setMessage(event.target.value))} placeholder="Write Something" className="w-[90%] h-full text-md text-slate-300 bg-slate-100 rounded-lg outline-none focus:text-black px-6 py-1 resize-none overflow-hidden"/>
+                <textarea id="textarea" value={message} onChange={(event) => {setMessage(event.target.value);}} placeholder="Write Something" className="w-[90%] h-full text-md text-slate-300 bg-slate-100 rounded-lg outline-none focus:text-black px-6 py-1 resize-none overflow-x-auto self-end"/>
                 {selectedImage && (
                     <div className="mt-2">
                     <Image src={selectedImage} alt="Selected Image Preview" width={30} height={30} />

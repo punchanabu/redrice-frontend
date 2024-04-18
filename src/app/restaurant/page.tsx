@@ -22,6 +22,8 @@ const Page = () => {
         };
         fetchUsers();
     }, [session]);
+    const [restaurants, setRestaurants] = useState([]);
+    const [Filterrestaurants, setFilterRestaurants] = useState([]);
 
     <div className="pl-12 pr-10 w-full h-screen overflow-y-auto">
         <div className="h-[700px] flex justify-center items-center">
@@ -45,11 +47,11 @@ const Page = () => {
                     )}
                 </div>
                 <div className="mt-3 md:mt-0 w-full md:w-1/3">
-                    <Searchbox />
+                    <Searchbox data={restaurants} filter={setFilterRestaurants}/>
                 </div>
             </div>
 
-            <Restaurants />
+            <Restaurants setRes={setRestaurants} Data={Filterrestaurants} />
         </main>
     );
 };

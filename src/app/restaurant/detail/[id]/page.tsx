@@ -4,6 +4,7 @@ import { mockRestaurant } from '@/mock/restaurant';
 import Image from 'next/image';
 import Instagram from '/public/img/instagram.svg';
 import Twitter from '/public/img/twitter.svg';
+import Facebook from '/public/img/facebook.svg';
 import { BiPhone } from 'react-icons/bi';
 import { getOneRestaurant } from '@/lib/restaurant';
 import { useSession } from 'next-auth/react';
@@ -11,6 +12,8 @@ import Restaurant from '@/types/restaurant';
 import { CircularProgress } from '@mui/material';
 import Link from 'next/link';
 import { Rate } from '@/components/Rate';
+import { FaFacebook } from 'react-icons/fa';
+import { MdOutlineEmail } from 'react-icons/md';
 
 const RestaurantDetailPage = ({ params }: { params: { id: string } }) => {
     const [restaurant, setRestaurant] = useState<Restaurant | null>(null);
@@ -35,22 +38,29 @@ const RestaurantDetailPage = ({ params }: { params: { id: string } }) => {
         <div>
             {restaurant ? (
                 <main className="pl-12 pr-10 w-full h-screen ">
-                    <h1 className="text-3xl md:text-4xl font-semibold">
-                        {restaurant?.name}
-                    </h1>
                     <div className="w-full lg:gap-10 flex flex-row items-center flex-wrap lg:flex-nowrap">
-                        <div className="w-full lg:w-1/2 flex justify-center mt-5 lg:mt-0">
+                        <div className="w-full h-[300px] md:h-[500px] lg:w-1/2 flex justify-center mt-5 lg:mt-0 flex-col gap-4 lg:gap-10 items-center mb-6">
+                            <div className="flex space-x-4">
+                                <h1 className="text-3xl md:text-4xl font-semibold">
+                                    {restaurant?.name}
+                                </h1>
+                                <button className="px-4 py-1 rounded-full bg-redrice-yellow hover:bg-redrice-light-yellow text-white flex flex-row items-center gap-2 font-medium">
+                                    <MdOutlineEmail />
+                                    <p className="hidden md:block">
+                                        Send message
+                                    </p>
+                                </button>
+                            </div>
                             <Image
                                 src={
                                     restaurant?.imageUrl ||
                                     '/img/downloadPic.jpeg'
                                 }
                                 alt={restaurant?.name || 'Restaurant Image'}
-                                width={527}
-                                height={384}
-                                className="rounded-2xl"
+                                width={500}
+                                height={500}
+                                className="rounded-2xl shadow-xl"
                             />
-                            
                         </div>
                         <section className="rounded-[1rem] p-5 md:p-10 w-full lg:w-1/2 text-lg shadow-lg border-2 mt-6 lg:mt-0 mb-6 lg:min-h-[600px]">
                             <section className="space-y-2 md:space-y-4">
@@ -79,6 +89,12 @@ const RestaurantDetailPage = ({ params }: { params: { id: string } }) => {
                                             {restaurant?.telephone}
                                         </p>
                                     </div>
+                                    <div className="flex space-x-5 flex-row items-center text-sm md:text-lg">
+                                        <div className="text-2xl text-blue-600">
+                                            <FaFacebook />
+                                        </div>
+                                        <p>{restaurant?.facebook}</p>
+                                    </div>
                                     <div className="flex space-x-3">
                                         <Image
                                             src={Instagram}
@@ -88,17 +104,6 @@ const RestaurantDetailPage = ({ params }: { params: { id: string } }) => {
                                         />
                                         <p className="text-sm md:text-lg">
                                             {restaurant?.instagram}
-                                        </p>
-                                    </div>
-                                    <div className="flex space-x-3">
-                                        <Image
-                                            src={Twitter}
-                                            alt="twitter-icons"
-                                            width={24}
-                                            height={24}
-                                        />
-                                        <p className="text-sm md:text-lg">
-                                            {restaurant?.facebook}
                                         </p>
                                     </div>
                                 </section>
@@ -112,10 +117,11 @@ const RestaurantDetailPage = ({ params }: { params: { id: string } }) => {
                                     </Link>
                                 </button>
                             </div>
-                        </section>  
+                        </section>
                     </div>
-                    <Rate />
-                    
+                    <div className="pb-10">
+                        <Rate />
+                    </div>
                 </main>
             ) : (
                 <div className="h-[700px] flex justify-center items-center">

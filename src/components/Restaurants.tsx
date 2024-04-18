@@ -6,8 +6,9 @@ import { getAllRestaurant } from '@/lib/restaurant';
 import Restaurant from '@/types/restaurant';
 import { useEffect, useState } from 'react';
 import { CircularProgress } from '@mui/material';
+import DataFilter from '@/types/searchbox';
 
-const Restaurants = () => {
+const Restaurants = ({setRes,Data}:{setRes:Function,Data:Array<DataFilter>}) => {
     const { data: session } = useSession();
     const [restaurants, setRestaurants] = useState([]);
     useEffect(() => {
@@ -17,11 +18,12 @@ const Restaurants = () => {
                     session.user.token
                 );
                 setRestaurants(fetchedRestaurants);
+                
             }
         };
         fetchRestaurants();
     }, [session]);
-
+    setRes(restaurants)
     if (!session) {
         return (
             <div className="h-[700px] flex justify-center items-center">
@@ -32,7 +34,7 @@ const Restaurants = () => {
 
     return (
         <div className="mt-5 md:mt-14 h-2/3 max-h-[550px] overflow-x-scroll ring-2 ring-slate-200 rounded-xl p-5 flex flex-row">
-            {restaurants?.map((res: Restaurant) => ( 
+            {Data?.map((res: DataFilter) => ( 
                 <RestaurantCard
                     key={res.ID}
                     name={res.name}
