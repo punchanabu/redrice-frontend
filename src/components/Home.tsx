@@ -1,63 +1,202 @@
-"use client"
+'use client';
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Howl } from 'howler';
+import { motion } from 'framer-motion';
+
 
 const Home = () => {
-    const sound = new Howl({
-        src: ['/sound/pop.mp3'],
-        volume: 0.5,
-    });
-    
-    const playSound = () => {
-        sound.play();
-    };
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+      },
+    },
+  };
 
-    return (
-        <main
-            className="px-10 w-full lg:h-screen overflow-y-auto flex justify-center flex-wrap bg-cover gap-10 gap-auto max-gap-10"
-            // style={{ backgroundImage: "url('/img/background.png')" }}
+  const itemVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0 },
+  };
+
+  const imageVariants = {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: { opacity: 1, scale: 1 },
+  };
+
+  return (
+    <div className="p-20">
+      <motion.div
+        className="w-full min-h-[400px] flex justify-center items-center opacity-80 space-x-10"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        <motion.div
+          className="space-y-10 flex flex-col items-center"
+          variants={itemVariants}
         >
-            <div className="mt-5 flex justify-start flex-col">
-                <div className="lg:hidden flex justify-center mb-10">
-                    <Image
-                        src="/img/restaurant_bg.PNG"
-                        alt="restaurant"
-                        width={550}
-                        height={550}
-                        className='rounded-[2rem] object-cover shadow-xl'
-                    />
-                </div>
-                <h1 className="text-3xl md:text-6xl lg:text-7xl font-bold pb-3 lg:pt-32">
-                    Discover and Reserve
-                </h1>
-                <h1 className="text-xl md:text-4xl lg:text-5xl font-bold text-redrice-yellow pb-2 md:pb-3">
-                    Book a Restaurant with ease!
-                </h1>
-                <p className="mt-5 pb-8 md:pb-16">
-                    Discover a seamless way to secure your dining plans with our
-                    intuitive reservation platform.
-                </p>
-                <Link 
-                    href = '/restaurant' 
-                    className="bg-redrice-yellow py-4 rounded-[2rem] font-bold text-white w-52 hover:bg-redrice-light-yellow text-center"
-                    onClick={playSound}
-                >
-                    Book Reservation Now
-                </Link>
-            </div>
-            <div className="hidden lg:block lg:pt-24 h-auto rounded-lg">
-                <Image
-                    src="/img/restaurant_bg.PNG"
-                    alt="restaurant"
-                    width={550}
-                    height={550}
-                    className='rounded-[2rem] object-cover shadow-xl'
-                />
-            </div>
-        </main>
-    );
+          <motion.h1
+            className="text-black text-6xl font-bold text-shadow opacity-100"
+            variants={itemVariants}
+          >
+            You Eat What You Get
+          </motion.h1>
+          <motion.p
+            className="text-gray-600 text-center text-2xl"
+            variants={itemVariants}
+          >
+            Discover a collection of simple and delicious recipes for every occasion.
+          </motion.p>
+          <motion.button
+            className="bg-gradient-to-r from-yellow-500 to-red-500 text-white p-5 rounded-2xl text-2xl font-bold"
+            variants={itemVariants}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+          >
+            Book a Reservation
+          </motion.button>
+        </motion.div>
+      </motion.div>
+      <motion.div
+        className="mt-20 flex justify-center space-x-10"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        <motion.div
+          className="bg-white shadow-lg rounded-lg p-8 flex flex-col items-center space-y-10"
+          variants={itemVariants}
+          whileHover={{ scale: 1.05 }}
+        >
+          <Image src = {'/img/hamburger.svg'} alt="Recipe" width={100} height={100} />
+          <motion.h2
+            className="text-4xl font-bold mb-4"
+            variants={itemVariants}
+          >
+            Ease of Booking 
+          </motion.h2>
+          <motion.p
+            className="text-gray-600 text-center"
+            variants={itemVariants}
+          >
+            Discover a collection of simple and delicious recipes for every occasion.
+          </motion.p>
+        </motion.div>
+        <motion.div
+          className="bg-white shadow-lg rounded-lg p-8 flex flex-col items-center space-y-10"
+          variants={itemVariants}
+          whileHover={{ scale: 1.05 }}
+        >
+          <Image src = {'/img/drumstick.svg'} alt="Drumstick" width={100} height={100} />
+          <motion.h2
+            className="text-4xl font-bold mb-4"
+            variants={itemVariants}
+          >
+            Get Your Best Experience
+          </motion.h2>
+          <motion.p
+            className="text-gray-600 text-center"
+            variants={itemVariants}
+          >
+            Learn helpful tips and techniques to enhance your cooking skills.
+          </motion.p>
+        </motion.div>
+      </motion.div>
+      <motion.div
+        className="mt-20"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        <motion.h2
+          className="text-5xl font-bold text-center mb-10"
+          variants={itemVariants}
+        >
+          Trusted By
+        </motion.h2>
+        <motion.div
+          className="flex justify-center space-x-10"
+          variants={itemVariants}
+        >
+          <motion.div
+            className="w-40 h-40 bg-white rounded-lg flex justify-center items-center"
+            variants={itemVariants}
+            whileHover={{ scale: 1.05 }}
+          >
+            <Image
+              src="/img/logo/microsoft.png"
+              alt="Microsoft Logo"
+              width={120}
+              height={120}
+            />
+          </motion.div>
+          <motion.div
+            className="w-40 h-40 bg-white rounded-lg flex justify-center items-center"
+            variants={itemVariants}
+            whileHover={{ scale: 1.05 }}
+          >
+            <Image
+              src="/img/logo/momo.png"
+              alt="Apple Logo"
+              width={120}
+              height={120}
+            />
+          </motion.div>
+          <motion.div
+            className="w-40 h-40 bg-white rounded-lg flex justify-center items-center"
+            variants={itemVariants}
+            whileHover={{ scale: 1.05 }}
+          >
+            <Image
+              src="/img/logo/suki.png"
+              alt="Google Logo"
+              width={120}
+              height={120}
+            />
+          </motion.div>
+          <motion.div
+            className="w-40 h-40 bg-white rounded-lg flex justify-center items-center"
+            variants={itemVariants}
+            whileHover={{ scale: 1.05 }}
+          >
+            <Image
+              src="/img/logo/bitkub.jpg"
+              alt="Facebook Logo"
+              width={120}
+              height={120}
+            />
+          </motion.div>
+          <motion.div
+            className="w-40 h-40 bg-white rounded-lg flex justify-center items-center"
+            variants={itemVariants}
+            whileHover={{ scale: 1.05 }}
+          >
+            <Image
+              src="/img/logo/bbq.jpg"
+              alt="Facebook Logo"
+              width={120}
+              height={120}
+            />
+          </motion.div>
+          <motion.div
+            className="w-40 h-40 bg-white rounded-lg flex justify-center items-center"
+            variants={itemVariants}
+            whileHover={{ scale: 1.05 }}
+          >
+            <Image
+              src="/img/logo/kub.png"
+              alt="Facebook Logo"
+              width={120}
+              height={120}
+            />
+          </motion.div>
+        </motion.div>
+        </motion.div>
+    </div>
+  );
 };
 
 export default Home;
