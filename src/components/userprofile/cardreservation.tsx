@@ -37,6 +37,7 @@ export default function CardReservation({
     const closeForm = () => {
         setIsOpen(false);
         setReviewText('');
+        setRating(0);
     };
 
     const handleReviewSubmit = async () => {
