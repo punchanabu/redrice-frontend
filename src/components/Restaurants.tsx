@@ -42,6 +42,7 @@ const Restaurants = ({setRes,Data}:{setRes:Function,Data:Array<DataFilter>}) => 
                     ID={res.ID}
                     openTime={res.openTime}
                     closeTime={res.closeTime}
+                    rating={res.rating}
                 />
             ))}
         </div>
