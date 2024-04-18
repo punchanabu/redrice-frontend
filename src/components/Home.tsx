@@ -1,8 +1,19 @@
+"use client"
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Howl } from 'howler';
+
 const Home = () => {
+    const sound = new Howl({
+        src: ['/sound/pop.mp3'],
+        volume: 0.5,
+    });
     
+    const playSound = () => {
+        sound.play();
+    };
+
     return (
         <main
             className="px-10 w-full lg:h-screen overflow-y-auto flex justify-center flex-wrap bg-cover gap-10 gap-auto max-gap-10"
@@ -28,7 +39,11 @@ const Home = () => {
                     Discover a seamless way to secure your dining plans with our
                     intuitive reservation platform.
                 </p>
-                <Link href = '/restaurant' className="bg-redrice-yellow py-4 rounded-[2rem] font-bold text-white w-52 hover:bg-redrice-light-yellow text-center">
+                <Link 
+                    href = '/restaurant' 
+                    className="bg-redrice-yellow py-4 rounded-[2rem] font-bold text-white w-52 hover:bg-redrice-light-yellow text-center"
+                    onClick={playSound}
+                >
                     Book Reservation Now
                 </Link>
             </div>

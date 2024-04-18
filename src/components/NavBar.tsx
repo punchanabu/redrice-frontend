@@ -10,9 +10,20 @@ import { useRouter } from 'next/navigation';
 import { FiLogOut } from 'react-icons/fi';
 import { FaUserAlt } from 'react-icons/fa';
 import { AiFillMessage } from "react-icons/ai";
+import { Howl } from 'howler';
+
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [login, setLogin] = useState(false);
+
+    const sound = new Howl({
+        src: ['/sound/pop.mp3'],
+        volume: 0.5,
+    });
+
+    const playSound = () => {
+        sound.play();
+    }
 
     const toggleNavbar = () => {
         setIsOpen(!isOpen);
@@ -43,7 +54,6 @@ const Navbar = () => {
         };
         fetchUsers();
     });
-
     return (
         <nav className="relative">
             <div className="mx-auto px-4 md:px-6">
@@ -53,6 +63,7 @@ const Navbar = () => {
                             <Link
                                 href="/"
                                 className="flex flex-row items-center"
+                                onClick={playSound}
                             >
                                 <Image
                                     src={'/redrice-logo.png'}
@@ -73,6 +84,7 @@ const Navbar = () => {
                                         <Link
                                             href="/admin/manage"
                                             className="rounded-md text-xl lg:text-2xl font-semibold hover:text-redrice-yellow ease-in duration-300"
+                                            onClick={playSound}
                                         >
                                             Management
                                         </Link>
@@ -80,30 +92,38 @@ const Navbar = () => {
                                     <Link
                                         href="/reservation"
                                         className="rounded-md text-xl lg:text-2xl font-semibold hover:text-redrice-yellow ease-in duration-300"
+                                        onClick={playSound}
                                     >
                                         Reservation
                                     </Link>
                                     <Link
                                         href="/restaurant"
                                         className="rounded-md text-xl lg:text-2xl font-semibold hover:text-redrice-yellow ease-in duration-300"
+                                        onClick={playSound}
                                     >
                                         Restaurant
                                     </Link>
 
-                                    <Link href={'/chat'}>
+                                    <Link 
+                                        href={'/chat'}
+                                        onClick={playSound}
+                                    >
                                         <div className="relative rounded-full  hover:border-redrice-yellow p-2 text-3xl hover:text-redrice-yellow ">
                                             <AiFillMessage />
                                         </div>
                                     </Link>
 
-                                    <Link href={'/profile'}>
+                                    <Link 
+                                        href={'/profile'}
+                                        onClick={playSound}
+                                    >
                                         <div className="relative rounded-full border-4 border-black hover:border-redrice-yellow p-2 text-2xl hover:text-redrice-yellow">
                                             <FaUserAlt />
                                         </div>
                                     </Link>
                                     <button
                                         title="Sign Out"
-                                        onClick={handleSignOut}
+                                        onClick={() => {handleSignOut(); playSound();}}
                                         className="rounded-lg text-xl lg:text-xl font-semibold hover:text-white bg-redrice-yellow hover:bg-redrice-light-yellow p-2 text-white"
                                     >
                                         <FiLogOut />
@@ -114,6 +134,7 @@ const Navbar = () => {
                             <Link
                                 href="/auth/login"
                                 className="font-bold text-white py-3 px-4 bg-redrice-yellow rounded-[1rem]  hover:text-black ease-in duration-300"
+                                onClick={playSound}
                             >
                                 Sign In
                             </Link>
