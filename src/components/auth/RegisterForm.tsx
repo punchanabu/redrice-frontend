@@ -23,10 +23,12 @@ const RegisterForm: React.FC = () => {
         email: '',
         telephone: '',
         password: '',
-        role: 'user',
+        role: '',
     });
-    
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+
+    const handleChange = (
+        e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    ) => {
         const { name, value } = e.target;
         setFormData((prevState) => ({
             ...prevState,
@@ -37,17 +39,25 @@ const RegisterForm: React.FC = () => {
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            if (!formData.name || !formData.email || !formData.telephone || !formData.password) {
+            if (
+                !formData.name ||
+                !formData.email ||
+                !formData.role ||
+                !formData.telephone ||
+                !formData.password
+            ) {
                 alert('Please fill in all fields');
                 return;
             }
             const response = await register(formData);
             console.log('register successful:', response);
-            router.push('/auth/login')
+            router.push('/auth/login');
         } catch (error) {
             console.error('Registration error:', error);
         }
     };
+
+    console.log(formData);
 
     return (
         <form
@@ -71,6 +81,15 @@ const RegisterForm: React.FC = () => {
                     value={formData.email}
                     onChange={handleChange}
                 />
+                <select
+                    name="role"
+                    className={`border-2 border-gray-200 p-3 rounded-lg focus:outline-none focus:border-yellow-500 ${formData.role ? '' : 'text-gray-400'}`}
+                    value={formData.role}
+                    onChange={handleChange}
+                >
+                    <option value="user">User</option>
+                    <option value="restaurant">Restaurant</option>
+                </select>
                 <input
                     name="telephone"
                     className="border-2 border-gray-200 p-3 rounded-lg focus:outline-none focus:border-yellow-500"
