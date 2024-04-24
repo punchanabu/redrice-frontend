@@ -14,12 +14,20 @@ import Link from 'next/link';
 import { Rate } from '@/components/Rate';
 import { FaFacebook } from 'react-icons/fa';
 import { MdOutlineEmail } from 'react-icons/md';
+import io, { ManagerOptions, SocketOptions } from 'socket.io-client';
+
+interface CustomSocketOptions extends ManagerOptions, SocketOptions {
+
+    auth: {
+        token:string,
+      },
+}
 
 const RestaurantDetailPage = ({ params }: { params: { id: string } }) => {
     const [restaurant, setRestaurant] = useState<Restaurant | null>(null);
 
     const { data: session } = useSession();
-
+    const token = session?.user.token;
     useEffect(() => {
         const fetchRestaurant = async () => {
             if (session?.user.token) {
@@ -33,6 +41,36 @@ const RestaurantDetailPage = ({ params }: { params: { id: string } }) => {
         fetchRestaurant();
     }, [session]);
 
+    const Createchat =()=>{
+
+      
+        
+            console.log('test token : ',token);
+            const socket = io('https://redrice-chat.onrender.com', {
+            transports: ["websocket"],
+            auth: {
+                token:token,
+              },
+          } as unknown as CustomSocketOptions);
+      
+          socket.on('connect', () => {
+            console.log('Connected to the server');
+            socket.emit('get my session',(res: any)=>{});
+            const restaurantId = params.id;
+            socket.emit('create chat', restaurantId);
+
+
+            socket.on('session', ()=>{});
+
+            socket.on('error', (error) => {
+                console.error('Error occurred:', error);});
+
+                
+          });
+
+
+    }
+
     console.log(restaurant);
     return (
         <div>
@@ -44,7 +82,7 @@ const RestaurantDetailPage = ({ params }: { params: { id: string } }) => {
                                 <h1 className="text-3xl md:text-4xl font-semibold">
                                     {restaurant?.name}
                                 </h1>
-                                <button className="px-4 py-1 rounded-full bg-redrice-yellow hover:bg-redrice-light-yellow text-white flex flex-row items-center gap-2 font-medium">
+                                <button className="px-4 py-1 rounded-full bg-redrice-yellow hover:bg-redrice-light-yellow text-white flex flex-row items-center gap-2 font-medium" onClick={()=>{Createchat()}}>
                                     <MdOutlineEmail />
                                     <p className="hidden md:block">
                                         Send message

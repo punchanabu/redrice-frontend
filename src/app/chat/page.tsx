@@ -44,7 +44,7 @@ export default function Chat(){
       socket.on('connect', () => {
         console.log('Connected to the server');
         socket.emit('get my session',(res: any)=>{});
-        
+       
         socket.on('session', async (session:{sessionId: string, userId?: number,restaurantId?:number}[]) => {
             // Loop through sessions for sequential data fetching
 
