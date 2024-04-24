@@ -3,16 +3,47 @@ import Link from "next/link"
 import Image from "next/image"
 import { useState } from "react"
 import DataFilter from "@/types/searchbox"
+import { AiOutlineMessage } from "react-icons/ai";
+import { FaRegMessage } from "react-icons/fa6";
+import { BiMessageSquare } from "react-icons/bi";
 const mockdata:Array<{roomid:string,name:string,img:string,msg:string,time:string}>=[{roomid:'1',name:'Pizza Hutz  1150',img:'',msg:'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Beatae, laboriosam.',time:'10:30 AM'},{roomid:'2',name:'Momo',img:'',msg:'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Beatae, laboriosam.',time:'10:30 AM'},{roomid:'3',name:'7-11',img:'',msg:'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Beatae, laboriosam.',time:'10:30 AM'},{roomid:'4',name:'Tenya',img:'',msg:'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Beatae, laboriosam.',time:'10:30 AM'},{roomid:'',name:'Yayoi',img:'',msg:'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Beatae, laboriosam.',time:'10:30 AM'}]
 
+interface Restaurant {
+    sessionId: string;
+    userId: number;
+  }
+  
+  interface ListRestaurantProps {
+    setroomid: Function
+    data:{roomid:string,name:string,imageUrl:string,msg:string,time:string}[]
+   // Allow null as a possible value
+  }
 
-export default function ListRestaurant({setroomid}:{setroomid:Function}) {
+export default function ListRestaurant({ setroomid,data }: ListRestaurantProps) {
     const [Filterrestaurants, setFilterRestaurants] = useState([]);
+    console.log('test pass data : ',data);
+
+    
     return(
     
-        <div className="w-full h-full flex flex-col gap-3">
-            <div className="px-3">
-                <Searchbox data={mockdata} filter={setFilterRestaurants}></Searchbox>
+        <div className="w-full h-full flex flex-col gap-3 ">
+            <div className="px-3 flex  gap-1 sm:max-xl:gap-0">
+                <div className="w-[88%] ">
+                <Searchbox data={data} filter={setFilterRestaurants}></Searchbox>
+                </div>
+            
+                    <div className=" p-0.5  text-center flex items-center relative ">
+                        <BiMessageSquare className="text-gray-300 hover:text-gray-400 text-3xl "></BiMessageSquare>
+                    <div className="bg-red-600 text-xs rounded-full px-1 text-white absolute top-1 left-[50%]  border-2 border-white ">{`100`}</div>
+        
+                </div>
+                
+                {/* <button type="button" className="w-[8%] border border-gray-300 rounded-lg p-3 bg-slate-50 text-slate-500 hover:bg-slate-200">
+                    <h1 className="text-center">Request</h1>
+                
+                </button> */}
+                
+                
             </div>
             
             <div className="w-full overflow-x-auto">
@@ -24,7 +55,7 @@ export default function ListRestaurant({setroomid}:{setroomid:Function}) {
                             <div className="w-1/6  flex items-center ">
                                 
                                 <Image
-                                src={ '/img/user/user1.png'}
+                                src={ data.imageUrl ||'/img/user/user1.png'  }
                                 alt="Product Picture"
                                 width={60}
                                 height={60}

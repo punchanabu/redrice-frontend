@@ -127,7 +127,7 @@ export default function ChatPanel({setroomid}:{setroomid:Function}){
                 </div>
                 
             </div>
-            <div className="h-10 w-[98%] wborder-slate-300 flex items-center gap-4 p-1 rounded-full bg-slate-100 mr-10 absolute left-[1%] bottom-[2%]">
+            <div className="h-10 w-[98%] wborder-slate-300 flex items-center justify-between gap-2 p-1 pr-5 rounded-full bg-slate-100 mr-10 absolute left-[1%] bottom-[2%]">
                 <textarea id="textarea" value={message} onChange={(event) => {setMessage(event.target.value);}} placeholder="Write Something" className="w-[90%] h-full text-md text-slate-300 bg-slate-100 rounded-lg outline-none focus:text-black px-6 py-1 resize-none overflow-x-auto self-end"/>
                 {selectedImage && (
                     <div className="mt-2">
@@ -135,19 +135,24 @@ export default function ChatPanel({setroomid}:{setroomid:Function}){
                     {/* Add buttons or actions for the selected image (optional) */}
                     </div>
                 )}
+                <div className="w-[10%] flex items-center justify-end gap-2">
+
+                    {/* <label htmlFor="image-upload">
+                    <FaImage className="text-2xl text-slate-300 hover:text-slate-400 cursor-pointer" />
+                    </label>
+                    <input
+                    id="image-upload"
+                    type="file"
+                    accept="image/*"
+                    // onChange={handleImageUpload}
+                    style={{ display: "none" }} // Hide the default input element
+                    /> */}
+                    {/* <UploadImage onFileSelect={onFileSelect} /> */}
+                    <IoMdSend  className="text-2xl text-redrice-blue hover:text-sky-800" onClick={()=>{send()}} />
+
+
+                </div>
                 
-                <label htmlFor="image-upload">
-                <FaImage className="text-2xl text-slate-300 hover:text-slate-400 cursor-pointer" />
-                </label>
-                <input
-                id="image-upload"
-                type="file"
-                accept="image/*"
-                // onChange={handleImageUpload}
-                style={{ display: "none" }} // Hide the default input element
-                />
-                {/* <UploadImage onFileSelect={onFileSelect} /> */}
-                <IoMdSend  className="text-2xl text-redrice-blue hover:text-sky-800" onClick={()=>{send()}} />
                 
             </div>
         </div>
