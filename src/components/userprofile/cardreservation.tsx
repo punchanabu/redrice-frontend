@@ -125,7 +125,6 @@ export default function CardReservation({
                                 onChange={(event, newValue) => {
                                     if (newValue !== null) setRating(newValue);
                                 }}
-                                className="inline-block"
                             />
                         </div>
 
