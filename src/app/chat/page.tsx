@@ -69,7 +69,7 @@ export default function Chat(){
       });
       connectSocket();
 
-    }, [token]);
+    });
     useEffect(() => {
         const fetchData = async () => {
         const newListData: ListData[] = [];
