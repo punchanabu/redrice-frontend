@@ -6,6 +6,16 @@ import {  useState } from "react";
 import UploadImage from "../UploadImage";
 import { IoIosArrowBack } from "react-icons/io";
 import { useRef } from "react";
+import io, { ManagerOptions, SocketOptions } from 'socket.io-client';
+import { useSession } from 'next-auth/react';
+
+
+interface CustomSocketOptions extends ManagerOptions, SocketOptions {
+
+    auth: {
+        token:string,
+      },
+}
 
 
 export default function ChatPanel({setroomid}:{setroomid:Function}){
@@ -24,14 +34,25 @@ export default function ChatPanel({setroomid}:{setroomid:Function}){
                 return 'bg-gray-800';
         }
     };
+    const { data: session } = useSession();
+    const token = session?.user.token;
+    const socket = io('https://redrice-chat.onrender.com', {
+        transports: ["websocket"],
+        auth: {
+            token:token,
+          },
+      } as unknown as CustomSocketOptions);
+
     const send = ()=>{
         if (message.trim() !== "") {
 
             // connect socket.io
+            socket.emit('send message', message);
 
             setMessage("");
           } 
     }
+    
     
     // const handleImageUpload = (event) => {
     //     const file = event.target.files[0];

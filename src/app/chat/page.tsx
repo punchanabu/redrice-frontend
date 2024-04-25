@@ -32,7 +32,7 @@ export default function Chat(){
     const [listdata, setListdata] = useState<ListData[]>([]);
     console.log('role : ',role);
     useEffect(() => {
-        
+      let isConnected = false;
         console.log('test token : ',token);
         const socket = io('https://redrice-chat.onrender.com', {
         transports: ["websocket"],
@@ -40,6 +40,12 @@ export default function Chat(){
             token:token,
           },
       } as unknown as CustomSocketOptions);
+      const connectSocket = () => {
+        // Connect only if not already connected
+        if (!isConnected) {
+            socket.connect();
+        }
+    };
   
       socket.on('connect', () => {
         console.log('Connected to the server');
@@ -52,13 +58,17 @@ export default function Chat(){
             setSessionOfSocket(session);
             console.log('abc :', session);
           });
-        socket.on('error', (error) => {
+            const sessionId = SessionOfSocket[0]?.sessionId;
+            socket.emit('join chat', sessionId);
+            socket.on('error', (error) => {
             console.error('Error occurred:', error);
             });
             
             
       
       });
+      connectSocket();
+
     }, [token]);
     useEffect(() => {
         const fetchData = async () => {
