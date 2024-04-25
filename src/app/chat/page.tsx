@@ -21,21 +21,14 @@ export default function Chat() {
     
     // Socket Connection
     const [socket, setSocket] = useState<Socket| null>(null);
-    // Token for Authentication
-    const [token, setToken] = useState<string | null>(null);
 
+    // Message List
+    const [messageList, setMessageList] = useState<string[]>([])
 
+    const { data: session } = useSession();
+    const token = session?.user.token;
+    const role = session?.user.role;
     
-    // Handler Function
-    const handleAuthentication = async () => {
-        const { data: session } = useSession();
-        const token = session?.user.token;
-        if (token) {
-            setToken(token)
-            return true;
-        };
-        return false;
-    };
 
     const handleRoomChange = (roomid: string) => {
         setRoomID(roomid);
@@ -54,18 +47,50 @@ export default function Chat() {
         console.log('Connecting to socket successfully!');
     }
 
-    const handleSession = (session: any) => {
-        console.log('My session:', session);
+    const handleSession = (roomList: any) => {
+        console.log(roomList);
+        setRoomList(roomList)
     } 
     
     const handleReceiveMessage = (message: any) => {
         console.log('Received message:', message);
+        const newMessageList = messageList;
+        newMessageList.push(message);
+        setMessageList(newMessageList)
+    }   
+
+    const handleDisconnect = () => {
+        console.log("Disconnected from socket");
+    }
+
+    const handleError = (error: unknown) => {
+        console.log("error:", error)
+    }
+
+    const handleGetRestaurant = async (id: string) => {
+        if (!token) return
+        const data = await getOneRestaurant(id, token)
+        return data;
+    }
+
+    const handleJoin = (sessionId: string, socket: Socket) => {
+        console.log(sessionId);
+        socket.emit("join chat", sessionId);
+    }
+
+    const handleSendMessage = (sessionId: string, message: string, socket: Socket) => {
+        
+        const messageRequest = {
+            sessionId: sessionId,
+            message: message
+        }
+
+        socket.emit("send message", messageRequest)
+        console.log(message);
     }
 
     useEffect(() => {
-        const authSuccess = handleAuthentication();
-        if (!authSuccess) return;
-        if (!Socket) {
+        if (!socket) {
             const socket = io('https://redrice-chat.onrender.com', {
                 transports: ["websocket"],
                 auth: {
@@ -79,8 +104,11 @@ export default function Chat() {
 
         socket.on('connect', handleConnection);
         socket.on('session', handleSession);
+        socket.on('receive message', handleReceiveMessage)
+        socket.on('error', handleError)
         socket.emit('get my session', handleReceiveMessage);
-    });
+        socket.on('disconnect', handleDisconnect)
+    }, [socket]);
      
 
     
@@ -88,10 +116,10 @@ export default function Chat() {
         
         <main className="w-full h-[calc(100%-96px)] flex">
             <div className={`sm:w-1/3 h-[100%] sm:border-t sm:border-r border-slate-300 pt-5 w-[100%] ${roomID!==''?'hidden sm:inline-block':'sm:inline-block'}`}>
-                <ListRestaurant  setroomid={setRoomID} data = {RoomList} ></ListRestaurant>
+                <ListRestaurant  setroomid={setRoomID} data = {RoomList} handleJoin ={handleJoin} socket={socket} setMessageList = {setMessageList}></ListRestaurant>
             </div>
             <div className={`sm:w-2/3 h-[100%] sm:border-t border-slate-300 ${roomID!==''?'inline-block ':'hidden sm:hidden'} `}>
-                <ChatPanel setroomid={setRoomID}></ChatPanel>
+                <ChatPanel setroomid={setRoomID} sessionId= {roomID} handleSendMessage={handleSendMessage} socket={socket} messageList = {messageList}></ChatPanel>
             </div>
         </main>
   )
