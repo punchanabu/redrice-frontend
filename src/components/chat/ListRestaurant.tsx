@@ -11,13 +11,12 @@ const mockdata:Array<{roomid:string,name:string,img:string,msg:string,time:strin
 interface Restaurant {
     sessionId: string;
     userId: number;
-  }
+}
   
-  interface ListRestaurantProps {
+interface ListRestaurantProps {
     setroomid: Function
-    data:{roomid:string,name:string,imageUrl:string,msg:string,time:string}[]
-   // Allow null as a possible value
-  }
+    data: any
+}
 
 export default function ListRestaurant({ setroomid,data }: ListRestaurantProps) {
     const [Filterrestaurants, setFilterRestaurants] = useState([]);

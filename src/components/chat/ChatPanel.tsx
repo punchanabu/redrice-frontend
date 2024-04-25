@@ -1,21 +1,12 @@
 'use client'
-import { FaImage } from "react-icons/fa";
 import { IoMdSend } from "react-icons/io";
 import Image from "next/image";
 import {  useState } from "react";
-import UploadImage from "../UploadImage";
 import { IoIosArrowBack } from "react-icons/io";
 import { useRef } from "react";
-import io, { ManagerOptions, SocketOptions } from 'socket.io-client';
+import io from 'socket.io-client';
 import { useSession } from 'next-auth/react';
-
-
-interface CustomSocketOptions extends ManagerOptions, SocketOptions {
-
-    auth: {
-        token:string,
-      },
-}
+import { CustomSocketOptions } from "@/types/chat";
 
 
 export default function ChatPanel({setroomid}:{setroomid:Function}){
