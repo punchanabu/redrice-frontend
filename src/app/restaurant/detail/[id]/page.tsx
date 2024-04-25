@@ -17,10 +17,9 @@ import { MdOutlineEmail } from 'react-icons/md';
 import io, { ManagerOptions, SocketOptions } from 'socket.io-client';
 
 interface CustomSocketOptions extends ManagerOptions, SocketOptions {
-
     auth: {
-        token:string,
-      },
+        token: string;
+    };
 }
 
 const RestaurantDetailPage = ({ params }: { params: { id: string } }) => {
@@ -41,35 +40,28 @@ const RestaurantDetailPage = ({ params }: { params: { id: string } }) => {
         fetchRestaurant();
     }, [session]);
 
-    const Createchat =()=>{
-
-      
-        
-            console.log('test token : ',token);
-            const socket = io('https://redrice-chat.onrender.com', {
-            transports: ["websocket"],
+    const Createchat = () => {
+        console.log('test token : ', token);
+        const socket = io('https://redrice-chat.onrender.com', {
+            transports: ['websocket'],
             auth: {
-                token:token,
-              },
-          } as unknown as CustomSocketOptions);
-      
-          socket.on('connect', () => {
+                token: token,
+            },
+        } as unknown as CustomSocketOptions);
+
+        socket.on('connect', () => {
             console.log('Connected to the server');
-            socket.emit('get my session',(res: any)=>{});
+            socket.emit('get my session', (res: any) => {});
             const restaurantId = params.id;
             socket.emit('create chat', restaurantId);
 
-
-            socket.on('session', ()=>{});
+            socket.on('session', () => {});
 
             socket.on('error', (error) => {
-                console.error('Error occurred:', error);});
-
-                
-          });
-
-
-    }
+                console.error('Error occurred:', error);
+            });
+        });
+    };
 
     console.log(restaurant);
     return (
@@ -82,7 +74,12 @@ const RestaurantDetailPage = ({ params }: { params: { id: string } }) => {
                                 <h1 className="text-3xl md:text-4xl font-semibold">
                                     {restaurant?.name}
                                 </h1>
-                                <button className="px-4 py-1 rounded-full bg-redrice-yellow hover:bg-redrice-light-yellow text-white flex flex-row items-center gap-2 font-medium" onClick={()=>{Createchat()}}>
+                                <button
+                                    className="px-4 py-1 rounded-full bg-redrice-yellow hover:bg-redrice-light-yellow text-white flex flex-row items-center gap-2 font-medium"
+                                    onClick={() => {
+                                        Createchat();
+                                    }}
+                                >
                                     <MdOutlineEmail />
                                     <p className="hidden md:block">
                                         Send message
@@ -97,7 +94,8 @@ const RestaurantDetailPage = ({ params }: { params: { id: string } }) => {
                                 alt={restaurant?.name || 'Restaurant Image'}
                                 width={500}
                                 height={500}
-                                className="rounded-2xl shadow-xl"
+                                layout="fixed"
+                                className="rounded-2xl shadow-xl w-[500px] h-[500px]"
                             />
                         </div>
                         <section className="rounded-[1rem] p-5 md:p-10 w-full lg:w-1/2 text-lg shadow-lg border-2 mt-6 lg:mt-0 mb-6 lg:min-h-[600px]">
@@ -158,7 +156,7 @@ const RestaurantDetailPage = ({ params }: { params: { id: string } }) => {
                         </section>
                     </div>
                     <div className="pb-10">
-                        <Rate />
+                        <Rate restaurantId={restaurant.ID} />
                     </div>
                 </main>
             ) : (
