@@ -20,7 +20,7 @@ interface Comment {
     //     imageUrl: string;
     // };
 }
-export function Rate() {
+export function Rate({ restaurantId }: { restaurantId: number }) {
     // setup rating
     const [comments, setComments] = useState<any | null>([]);
     const [sum, setSum] = useState(0);
@@ -36,7 +36,7 @@ export function Rate() {
     useEffect(() => {
         const fetchComments = async () => {
             if (session?.user.token) {
-                const fetchedComments = await getAllComments(session.user.token);
+                const fetchedComments = await getAllComments(session.user.token, restaurantId);
                 setComments(fetchedComments);
             }
         };

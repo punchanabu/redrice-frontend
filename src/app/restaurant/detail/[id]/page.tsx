@@ -158,7 +158,7 @@ const RestaurantDetailPage = ({ params }: { params: { id: string } }) => {
                         </section>
                     </div>
                     <div className="pb-10">
-                        <Rate />
+                        <Rate restaurantId={restaurant.ID}/>
                     </div>
                 </main>
             ) : (
