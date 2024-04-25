@@ -56,7 +56,7 @@ const Home = () => {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
           >
-            Book a Reservation
+            <Link href="/restaurant">Book a Reservation</Link>
           </motion.button>
         </motion.div>
       </motion.div>
