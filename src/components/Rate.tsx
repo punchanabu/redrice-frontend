@@ -20,7 +20,7 @@ interface Comment {
     //     imageUrl: string;
     // };
 }
-export function Rate() {
+export function Rate({ restaurantId }: { restaurantId: number }) {
     // setup rating
     const [comments, setComments] = useState<any | null>([]);
     const [sum, setSum] = useState(0);
@@ -36,11 +36,14 @@ export function Rate() {
     useEffect(() => {
         const fetchComments = async () => {
             if (session?.user.token) {
-                const fetchedComments = await getAllComments(session.user.token);
+                const fetchedComments = await getAllComments(
+                    session.user.token,
+                    restaurantId
+                );
                 setComments(fetchedComments);
             }
         };
-        
+
         if (session?.user.token) {
             fetchComments();
         }
@@ -94,17 +97,13 @@ export function Rate() {
         { label: '2', percentage: rate2 },
         { label: '1', percentage: rate1 },
     ];
-    console.log(rate5)
-    console.log(rate4)
-    console.log(rate3)
-    console.log(rate2)
-    console.log(rate1)
+
     return (
         <div className="rounded-[1rem] p-5 md:p-10 w-full shadow-lg border-2 my-3">
             <div className="flex flex-wrap space-y-4 md:space-y-0">
                 <div className="w-full md:w-1/4 flex flex-col justify-center items-center md:pr-5">
                     <h1 className="text-5xl font-semibold text-center">
-                        {Number(averageRating)}
+                        {isNaN(averageRating) ? 0 : Number(averageRating)}
                     </h1>
                     <Rating
                         name="read-only"
@@ -129,21 +128,17 @@ export function Rate() {
             </div>
 
             <div className="mx-2 overflow-y-auto h-52">
-                <div className="">
-                    {comments.map((review: Comment, index: number) => (
-                        <>
+                {comments.length === 0 ? (
+                    <div className="flex items-center justify-center h-full">
+                        <p>No reviews available.</p>
+                    </div>
+                ) : (
+                    <div className="">
+                        {comments.map((review: Comment, index: number) => (
                             <div
                                 key={index}
                                 className="flex items-center border-b-2"
                             >
-                                {/* <Image
-                                    src={review.restaurant.imageUrl}
-                                    alt={`Profile picture of ${review.user.name}`}
-                                    width={50}
-                                    height={50}
-                                    className="object-cover rounded-full"
-                                /> */}
-
                                 <FaUserAlt className="text-2xl mr-4 ml-2" />
                                 <div className="flex flex-col mx-4 my-4">
                                     <h4>{review.user.name}</h4>
@@ -155,9 +150,9 @@ export function Rate() {
                                     <h4 className="pt-3">{review.myComment}</h4>
                                 </div>
                             </div>
-                        </>
-                    ))}
-                </div>
+                        ))}
+                    </div>
+                )}
             </div>
         </div>
     );
