@@ -41,6 +41,8 @@ const RestaurantDetailPage = ({ params }: { params: { id: string } }) => {
     }, [session]);
 
     const Createchat = () => {
+        // Flag to track connection status
+        let isConnected = false;
         console.log('test token : ', token);
         const socket = io('https://redrice-chat.onrender.com', {
             transports: ['websocket'],
@@ -48,20 +50,36 @@ const RestaurantDetailPage = ({ params }: { params: { id: string } }) => {
                 token: token,
             },
         } as unknown as CustomSocketOptions);
-
+        // Function to handle socket connection
+        const connectSocket = () => {
+            // Connect only if not already connected
+            if (!isConnected) {
+                socket.connect();
+            }
+        };
+    
         socket.on('connect', () => {
             console.log('Connected to the server');
-            socket.emit('get my session', (res: any) => {});
+            isConnected = true; // Update connection status
+            socket.emit('get my session', (res: any) => { });
             const restaurantId = params.id;
             socket.emit('create chat', restaurantId);
-
-            socket.on('session', () => {});
-
+    
+            socket.on('session', () => { });
+            
             socket.on('error', (error) => {
                 console.error('Error occurred:', error);
             });
+    
+            // Redirect to /chat after successful connection
+            window.location.href = '/chat';
         });
+    
+        // Stage to check connection status before attempting to connect
+        connectSocket();
     };
+    
+
 
     console.log(restaurant);
     return (
