@@ -67,7 +67,7 @@ interface ListRestaurantProps {
     handleJoin: (sessionId: any, socket: any) => void;
     socket: Socket | null;
     setMessageList: (newMessageList: any) => void;
-    setChatData: (chatData: { imageUrl: string, name: string }) => void;
+    setChatData: (chatData: { imageUrl: string; name: string }) => void;
 }
 
 export default function ListRestaurant({
@@ -76,11 +76,11 @@ export default function ListRestaurant({
     handleJoin,
     socket,
     setMessageList,
-    setChatData
+    setChatData,
 }: ListRestaurantProps) {
     const handleRestaurantClick = (imageUrl: string, name: string) => {
         setChatData({ imageUrl, name });
-    }
+    };
     const [Filterrestaurants, setFilterRestaurants] = useState([]);
     const { data: session } = useSession();
     const [restaurants, setRestaurants] = useState([]);
@@ -100,9 +100,7 @@ export default function ListRestaurant({
     useEffect(() => {
         const fetchUsers = async () => {
             if (session?.user.token) {
-                const fetchUsers = await getusers(
-                    session.user.token
-                );
+                const fetchUsers = await getusers(session.user.token);
                 setUsers(fetchUsers);
             }
         };
@@ -155,7 +153,6 @@ export default function ListRestaurant({
     console.log('newdatauser', newdatauser); //restaurant
     console.log('filter', Filterrestaurants);
 
-    //add imageUrl and name that have same ID with restaurantID in Filterrestaurants
     //console log first userId of Filterrestaurants
     console.log('Filterrestaurantssss', (Filterrestaurants[0] as any)?.userId);
     //match Filterrestaurants[0] as any)?.userId with id of newdatauser and console log role of that user
@@ -165,20 +162,50 @@ export default function ListRestaurant({
             (data: any) => data.id === (Filterrestaurants[0] as any)?.userId
         )?.role
     );
-    if (newdatauser.find(
-        (data: any) => data.id === (Filterrestaurants[0] as any)?.userId
-    )?.role ==='user'){
-        console.log()
+    let dataFilter: any[] = [];
+    if (
+        newdatauser.find(
+            (data: any) => data.id === (Filterrestaurants[0] as any)?.userId
+        )?.role == 'user' ||
+        newdatauser.find(
+            (data: any) => data.id === (Filterrestaurants[0] as any)?.userId
+        )?.role == 'admin'
+    ) {
+        //add imageUrl and name that have same ID with userID in Filterrestaurants
+        dataFilter = Filterrestaurants.map((data: any, index: number) => {
+            return {
+                ...data,
+                imageUrl: '/img/user/user1.png',
+                name:
+                    newdatauser.find(
+                        (data: any) =>
+                            data.id ===
+                            (Filterrestaurants[index] as any)?.userId
+                    )?.name || 'No name',
+            };
+        });
+        //console.log('dataFilter', dataFilter);
+    } else {
+        //add imageUrl and name that have same ID with restaurantID in Filterrestaurants
+        dataFilter = Filterrestaurants.map((data: any, index: number) => {
+            return {
+                ...data,
+                imageUrl: newdata[index]?.imageUrl || '/img/user/user1.png',
+                name: newdata[index]?.name || 'No name',
+            };
+        });
+        //console.log('dataFilter', dataFilter);
     }
+    //add imageUrl and name that have same ID with restaurantID in Filterrestaurants
+    // const dataFilter = Filterrestaurants.map((data: any, index: number) => {
+    //     return {
+    //         ...data,
+    //         imageUrl: newdata[index]?.imageUrl || '/img/user/user1.png',
+    //         name: newdata[index]?.name || 'No name',
+    //     };
+    // });
+    // //console.log('dataFilter', dataFilter);
 
-    const dataFilter = Filterrestaurants.map((data: any, index: number) => {
-        return {
-            ...data,
-            imageUrl: newdata[index]?.imageUrl || '/img/user/user1.png',
-            name: newdata[index]?.name || 'No name',
-        };
-    });
-    //console.log('dataFilter', dataFilter);
     const handleRoomClick = (session: string) => {
         handleJoin(session, socket);
     };
@@ -236,7 +263,6 @@ export default function ListRestaurant({
                     </div>
                 ))}
             </div>
-            
         </div>
     );
 }
