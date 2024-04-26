@@ -6,12 +6,14 @@ import { useState } from 'react';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { IoCloseCircleSharp } from 'react-icons/io5';
 import { createCommentAndRating } from '@/lib/comment';
+import Alert from '@mui/material/Alert';
+
 export default function CardReservation({
     id,
     name,
     time,
     picture,
-    restaurantId
+    restaurantId,
 }: {
     id: string;
     name: string;
@@ -19,7 +21,6 @@ export default function CardReservation({
     time: string;
     picture: string;
 }) {
-
     const { data: session } = useSession();
 
     const [isOpen, setIsOpen] = useState(false);
@@ -40,31 +41,35 @@ export default function CardReservation({
         setRating(0);
     };
 
+    const [trueSubmit, setTrueSubmit] = useState(false);
+    const [falseSubmit, setFalseSubmit] = useState(false);
+
     const handleReviewSubmit = async () => {
         // Perform actions here when submitting review text
-        
-        if (!session?.user.token)
-            return;
-        if(rating === 0){
-            alert("Please select a rating")
-            return;
-        }
-        if(reviewText === ''){
-            alert("Please enter a review")
+
+        if (!session?.user.token) return;
+        if (rating === 0) {
+            alert('Please select a rating');
             return;
         }
-        try{
+        // if (reviewText === '') {
+        //     alert('Please enter a review');
+        //     return;
+        // }
+        try {
             await createCommentAndRating(session?.user.token, {
                 myComment: reviewText,
                 rating: rating,
                 restaurantId: Number(restaurantId),
-            })
-        }
-        catch (error) {
+            });
+            console.log('Submitted review:', reviewText);
+            setTrueSubmit(true);
+            setFalseSubmit(false);
+        } catch (error) {
             console.error('Comment error:', error);
+            setFalseSubmit(true);
+            setTrueSubmit(false);
         }
-
-        console.log('Submitted review:', reviewText);
         // Close the form after submitting (optional)
         closeForm();
     };
@@ -79,6 +84,8 @@ export default function CardReservation({
 
     return (
         <div className="h-[15%] w-[90%] rounded-lg shadow-md m-1 flex flex-row hover:bg-slate-100">
+            {trueSubmit && <Alert severity="success">Success Review</Alert>}
+            {falseSubmit && <Alert severity="error">Failed Review</Alert>}
             <div className="w-[45px] h-[45px] relative rounded-lg  p-5 m-5 ml-5 mr-5  self-center ">
                 <Image
                     src={picture}
