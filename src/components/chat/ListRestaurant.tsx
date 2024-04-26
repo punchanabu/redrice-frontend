@@ -10,6 +10,7 @@ import { sessionRoom } from '@/types/chat';
 import { getAllRestaurant } from '@/lib/restaurant';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
+import { getusers } from '@/lib/auth';
 
 const mockdata: Array<{
     roomid: string;
@@ -66,6 +67,7 @@ interface ListRestaurantProps {
     handleJoin: (sessionId: any, socket: any) => void;
     socket: Socket | null;
     setMessageList: (newMessageList: any) => void;
+    setChatData: (chatData: { imageUrl: string, name: string }) => void;
 }
 
 export default function ListRestaurant({
@@ -74,10 +76,15 @@ export default function ListRestaurant({
     handleJoin,
     socket,
     setMessageList,
+    setChatData
 }: ListRestaurantProps) {
+    const handleRestaurantClick = (imageUrl: string, name: string) => {
+        setChatData({ imageUrl, name });
+    }
     const [Filterrestaurants, setFilterRestaurants] = useState([]);
     const { data: session } = useSession();
     const [restaurants, setRestaurants] = useState([]);
+    const [users, setUsers] = useState([]);
     useEffect(() => {
         const fetchRestaurants = async () => {
             if (session?.user.token) {
@@ -89,17 +96,45 @@ export default function ListRestaurant({
         };
         fetchRestaurants();
     }, [session]);
+    //get all users
+    useEffect(() => {
+        const fetchUsers = async () => {
+            if (session?.user.token) {
+                const fetchUsers = await getusers(
+                    session.user.token
+                );
+                setUsers(fetchUsers);
+            }
+        };
+        fetchUsers();
+    }, [session]);
+    //console.log('users', users);
+    //console.log('session', session);
     //create empty array of array to store imgurl and id and name
 
     const imgurl: any[] = [];
     const id: any[] = [];
     const name: any[] = [];
+
+    //create empty array to store user.name and user.id and user.role
+    const username: any[] = [];
+    const userid: any[] = [];
+    const userrole: any[] = [];
     //store imgurl and id in array
     restaurants.map((data: any) => {
         imgurl.push(data.imageUrl);
         id.push(data.ID);
         name.push(data.name);
     });
+    //console.log('restaurants', restaurants)
+    //store user.name and user.id in array
+    users.map((data: any) => {
+        username.push(data.name);
+        userid.push(data.ID);
+        userrole.push(data.role);
+    });
+    console.log('userssss', users);
+
     //create new array of object with imgurl and id
     const newdata = restaurants.map((data: any, index: number) => {
         return {
@@ -108,16 +143,42 @@ export default function ListRestaurant({
             name: name[index],
         };
     });
-    console.log('newdata', newdata);
+    //create new array of object with user.name and user.id
+    const newdatauser = users.map((data: any, index: number) => {
+        return {
+            name: username[index],
+            id: userid[index],
+            role: userrole[index],
+        };
+    });
+    console.log('newdata', newdata); //user
+    console.log('newdatauser', newdatauser); //restaurant
     console.log('filter', Filterrestaurants);
-    //add imageUrl that have same ID with restaurantID in Filterrestaurants
+
+    //add imageUrl and name that have same ID with restaurantID in Filterrestaurants
+    //console log first userId of Filterrestaurants
+    console.log('Filterrestaurantssss', (Filterrestaurants[0] as any)?.userId);
+    //match Filterrestaurants[0] as any)?.userId with id of newdatauser and console log role of that user
+    console.log(
+        'role',
+        newdatauser.find(
+            (data: any) => data.id === (Filterrestaurants[0] as any)?.userId
+        )?.role
+    );
+    if (newdatauser.find(
+        (data: any) => data.id === (Filterrestaurants[0] as any)?.userId
+    )?.role ==='user'){
+        console.log()
+    }
+
     const dataFilter = Filterrestaurants.map((data: any, index: number) => {
         return {
             ...data,
-            imageUrl: newdata[index].imageUrl,
+            imageUrl: newdata[index]?.imageUrl || '/img/user/user1.png',
+            name: newdata[index]?.name || 'No name',
         };
     });
-    console.log('dataFilter', dataFilter);
+    //console.log('dataFilter', dataFilter);
     const handleRoomClick = (session: string) => {
         handleJoin(session, socket);
     };
@@ -147,6 +208,7 @@ export default function ListRestaurant({
                             setroomid(data.sessionId);
                             handleRoomClick(data.sessionId);
                             setMessageList([]);
+                            handleRestaurantClick(data.imageUrl, data.name);
                         }}
                     >
                         <div className="w-1/6  flex items-center ">
@@ -160,10 +222,10 @@ export default function ListRestaurant({
                         </div>
                         <div className="w-2/3 flex flex-col">
                             <h1 className="w-full line-clamp-1 text-redrice-yellow">
-                                {data.sessionId}
+                                {data.name}
                             </h1>
                             <h1 className="w-full line-clamp-1 text-slate-300 bold">
-                                {data.userId || data.restaurantId}
+                                let start conversation
                             </h1>
                         </div>
                         <div className="w-1/6 flex flex-col items-start">

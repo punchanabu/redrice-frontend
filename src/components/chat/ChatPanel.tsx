@@ -21,8 +21,9 @@ interface ChatPanelProps {
     handleSendMessage: (sessionId: string, message: string, socket: Socket) => void;
     socket: Socket | null;
     messageList: Message[] | string[];
+    chatData: { imageUrl: string, name: string };
 }
-export default function ChatPanel({ setroomid, sessionId, handleSendMessage, socket, messageList }: ChatPanelProps) {
+export default function ChatPanel({ setroomid, sessionId, handleSendMessage, socket, messageList, chatData }: ChatPanelProps) {
 
     const [styleState, setStyleState] = useState(true)
     const [reservationState] = useState<boolean>(styleState);
@@ -58,7 +59,7 @@ export default function ChatPanel({ setroomid, sessionId, handleSendMessage, soc
             <div className="h-20 w-full border-b border-slate-300 flex p-1 px-3 items-center gap-4 tablet:gap-6">
                 <IoIosArrowBack className="text-3xl text-white bg-slate-500 p-1 rounded-full sm:hidden hover:bg-slate-300" onClick={() => setroomid()}></IoIosArrowBack>
                 <Image
-                    src={'/img/user/user1.png'}
+                    src={chatData.imageUrl}
                     alt="Product Picture"
                     width={60}
                     height={60}
@@ -66,7 +67,7 @@ export default function ChatPanel({ setroomid, sessionId, handleSendMessage, soc
                 />
 
 
-                <h1 className="text-md sm:text-2xl semi-bold">{sessionId}</h1>
+                <h1 className="text-md sm:text-2xl semi-bold">{chatData.name}</h1>
                 <div className={`w-[10px] h-[10px] rounded-full ${getBackgroundColor()} ${styleState ? 'animate-ping' : ''} `}></div>
                 {
                     !styleState ? <div className="text-md text-slate-500 relative -left-[1%]">จะรีบติดต่อกลับทันที</div> : ''
