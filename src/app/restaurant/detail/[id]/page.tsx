@@ -57,29 +57,27 @@ const RestaurantDetailPage = ({ params }: { params: { id: string } }) => {
                 socket.connect();
             }
         };
-    
+
         socket.on('connect', () => {
             console.log('Connected to the server');
             isConnected = true; // Update connection status
-            socket.emit('get my session', (res: any) => { });
+            socket.emit('get my session', (res: any) => {});
             const restaurantId = params.id;
             socket.emit('create chat', restaurantId);
-    
-            socket.on('session', () => { });
-            
+
+            socket.on('session', () => {});
+
             socket.on('error', (error) => {
                 console.error('Error occurred:', error);
             });
-    
+
             // Redirect to /chat after successful connection
             window.location.href = '/chat';
         });
-    
+
         // Stage to check connection status before attempting to connect
         connectSocket();
     };
-    
-
 
     console.log(restaurant);
     return (
@@ -113,7 +111,7 @@ const RestaurantDetailPage = ({ params }: { params: { id: string } }) => {
                                 width={500}
                                 height={500}
                                 layout="fixed"
-                                className="rounded-2xl shadow-xl w-[500px] h-[500px]"
+                                className="rounded-2xl shadow-xl w-[300px] h-[300px] md:w-[400px] md:h-[400px] lg:w-[500px] lg:h-[500px] "
                             />
                         </div>
                         <section className="rounded-[1rem] p-5 md:p-10 w-full lg:w-1/2 text-lg shadow-lg border-2 mt-6 lg:mt-0 mb-6 lg:min-h-[600px]">
