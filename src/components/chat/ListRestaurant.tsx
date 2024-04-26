@@ -7,6 +7,8 @@ import { AiOutlineMessage } from "react-icons/ai";
 import { FaRegMessage } from "react-icons/fa6";
 import { BiMessageSquare } from "react-icons/bi";
 import { Socket } from "socket.io-client"
+import { sessionRoom } from "@/types/chat";
+
 const mockdata:Array<{roomid:string,name:string,img:string,msg:string,time:string}>=[{roomid:'1',name:'Pizza Hutz  1150',img:'',msg:'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Beatae, laboriosam.',time:'10:30 AM'},{roomid:'2',name:'Momo',img:'',msg:'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Beatae, laboriosam.',time:'10:30 AM'},{roomid:'3',name:'7-11',img:'',msg:'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Beatae, laboriosam.',time:'10:30 AM'},{roomid:'4',name:'Tenya',img:'',msg:'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Beatae, laboriosam.',time:'10:30 AM'},{roomid:'',name:'Yayoi',img:'',msg:'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Beatae, laboriosam.',time:'10:30 AM'}]
 
 interface Restaurant {
@@ -15,23 +17,19 @@ interface Restaurant {
 }
   
 interface ListRestaurantProps {
-    setroomid: Function
-    data: {
-        sessionId: string,
-        restaurantId?: string,
-        userId?: string,
-    }
-    handleJoin: (sessionId: any, socket: any) => void
-    socket: Socket | null
-    setMessageList: (newMessageList: any) => void
+    setroomid: Function;
+    data: (DataFilter[] | sessionRoom[]);
+    handleJoin: (sessionId: any, socket: any) => void;
+    socket: Socket | null;
+    setMessageList: (newMessageList: any) => void;
 }
-
 export default function ListRestaurant({ setroomid,data, handleJoin, socket, setMessageList }: ListRestaurantProps) {
     const [Filterrestaurants, setFilterRestaurants] = useState([]);
 
     const handleRoomClick = (session: string) => {
         handleJoin(session, socket)
     }
+    
 
     
     return(
@@ -39,7 +37,7 @@ export default function ListRestaurant({ setroomid,data, handleJoin, socket, set
         <div className="w-full h-full flex flex-col gap-3 ">
             <div className="px-3 flex  gap-1 sm:max-xl:gap-0">
                 <div className="w-[88%] ">
-                <Searchbox data={data} filter={setFilterRestaurants}></Searchbox>
+                <Searchbox data={data as DataFilter[]} filter={setFilterRestaurants}></Searchbox>
                 </div>
             
                     <div className=" p-0.5  text-center flex items-center relative ">

@@ -51,4 +51,4 @@ const MockChatUIs = () => {
   )
 }
 
-export default MockChat
+export default MockChatUIs

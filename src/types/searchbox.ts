@@ -23,6 +23,9 @@ interface DataFilter {
     email?: string;
 
     //any type... if you want searchbox work but add ? all type eiei
+    sessionId?: string;
+    restaurantId?: string;
+    userId?: string;
   }
 
 export default DataFilter

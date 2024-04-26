@@ -10,6 +10,7 @@ interface sessionRoom {
     sessionId: string;
     userId?: number;
     restaurantId?: number;
+    name?: string;
 }
 
 interface ListData {

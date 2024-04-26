@@ -9,12 +9,18 @@ import { useSession } from 'next-auth/react';
 import { CustomSocketOptions } from "@/types/chat";
 import { Socket } from "socket.io-client";
 
+interface Message {
+    fromUserId: string;
+    message: string;
+    timeStamp: string;
+}
+
 interface ChatPanelProps {
-    setroomid: () => void;
+    setroomid: Function;
     sessionId: string;
     handleSendMessage: (sessionId: string, message: string, socket: Socket) => void;
     socket: Socket | null;
-    messageList: Object[]
+    messageList: Message[] | string[];
 }
 export default function ChatPanel({ setroomid, sessionId, handleSendMessage, socket, messageList }: ChatPanelProps) {
 
@@ -51,7 +57,7 @@ export default function ChatPanel({ setroomid, sessionId, handleSendMessage, soc
     return (
         <div className="w-full h-full flex flex-col relative">
             <div className="h-20 w-full border-b border-slate-300 flex p-1 px-3 items-center gap-4 tablet:gap-6">
-                <IoIosArrowBack className="text-3xl text-white bg-slate-500 p-1 rounded-full sm:hidden hover:bg-slate-300" onClick={() => { setroomid('') }}></IoIosArrowBack>
+                <IoIosArrowBack className="text-3xl text-white bg-slate-500 p-1 rounded-full sm:hidden hover:bg-slate-300" onClick={() => setroomid()}></IoIosArrowBack>
                 <Image
                     src={'/img/user/user1.png'}
                     alt="Product Picture"
@@ -67,12 +73,18 @@ export default function ChatPanel({ setroomid, sessionId, handleSendMessage, soc
                     !styleState ? <div className="text-md text-slate-500 relative -left-[1%]">จะรีบติดต่อกลับทันที</div> : ''
                 }
             </div>
-            <div className="w-full h-[calc(100%-136px)] py-2 px-4">
+            <div className="w-full h-[calc(100%-136px)] py-2 px-4 overflow-y-auto">
                 {messageList.map((message, index) => (
                     <div key={index} className="mb-4">
-                        <div className="font-bold">{message.fromUserId}</div>
-                        <div>{message.message}</div>
-                        <div className="text-sm text-gray-500">{message.timeStamp}</div>
+                        {typeof message === 'string' ? (
+                            <div>{message}</div>
+                        ) : (
+                            <>
+                                <div className="font-bold">{message.fromUserId}</div>
+                                <div>{message.message}</div>
+                                <div className="text-sm text-gray-500">{message.timeStamp}</div>
+                            </>
+                        )}
                     </div>
                 ))}
             </div>
