@@ -52,10 +52,10 @@ export default function CardReservation({
             alert('Please select a rating');
             return;
         }
-        if (reviewText === '') {
-            alert('Please enter a review');
-            return;
-        }
+        // if (reviewText === '') {
+        //     alert('Please enter a review');
+        //     return;
+        // }
         try {
             await createCommentAndRating(session?.user.token, {
                 myComment: reviewText,
