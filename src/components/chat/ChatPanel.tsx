@@ -30,7 +30,6 @@ export default function ChatPanel({ setroomid, sessionId, handleSendMessage, soc
     // TODO: remove this
     const [image, setImage] = useState<File | null>(null);
     const [selectedImage, setSelectedImage] = useState(null);
-    const [sessionid, setSessionId] = useState<string>("sessionid");
 
     const getBackgroundColor = () => {
         switch (reservationState) {
