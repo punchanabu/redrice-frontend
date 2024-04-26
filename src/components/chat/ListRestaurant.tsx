@@ -41,9 +41,9 @@ export default function ListRestaurant({ setroomid,data, handleJoin, socket, set
           if (token && filterrestaurants.length > 0) {
             const promises = filterrestaurants.map(async (restaurant: any) => {
               try {
-                const { userId } = restaurant;
-                const fetchedRestaurant = await getOneRestaurant(userId.toString(), token);
-                console.log(restaurant)
+                const { restaurantId } = restaurant;
+                const fetchedRestaurant = await getOneRestaurant(restaurantId.toString(), token);
+                console.log(fetchedRestaurant)
 
                 return { ...restaurant, details: fetchedRestaurant };
               } catch (error) {
@@ -66,6 +66,9 @@ export default function ListRestaurant({ setroomid,data, handleJoin, socket, set
         handleJoin(sessionId, socket);
         setMessageList([]);
       };
+      restaurantsDetails.map((restaurant: any) =>{
+        console.log(restaurant.details.name)
+      })
         
     return (
         <div className="w-full h-full flex flex-col gap-3">
@@ -90,21 +93,21 @@ export default function ListRestaurant({ setroomid,data, handleJoin, socket, set
               >
                 <div className="w-1/6 flex items-center">
                   <Image
-                    src={restaurant.details?.imageUrl }
                     alt="Restaurant Image"
                     width={60}
                     height={60}
+                    src={restaurant.details.imageUrl}
                     className="h-full object-contain rounded-full flex items-center"
                   />
                 </div>
                 <div className="w-2/3 flex flex-col">
-                  <h1 className="w-full line-clamp-1 text-redrice-yellow">{restaurant.sessionId}</h1>
+                  <h1 className="w-full line-clamp-1 text-redrice-yellow">{restaurant.details.name}</h1>
                   <h1 className="w-full line-clamp-1 text-slate-300 bold">
-                    {restaurant.details ? restaurant.details.name : 'Unknown Restaurant'}
+                    Start a Conversation
                   </h1>
                 </div>
                 <div className="w-1/6 flex flex-col items-start">
-                  <h1 className="text-slate-300 bold">{restaurant.time}</h1>
+                  <h1 className="text-slate-300 bold">{restaurant.details.time}</h1>
                 </div>
               </div>
             ))}
