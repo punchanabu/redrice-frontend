@@ -30,7 +30,7 @@ export default function ChatPanel({ setroomid, sessionId, handleSendMessage, soc
     // TODO: remove this
     const [image, setImage] = useState<File | null>(null);
     const [selectedImage, setSelectedImage] = useState(null);
-
+    const [sessionid, setSessionId] = useState<string>("sessionid");
 
     const getBackgroundColor = () => {
         switch (reservationState) {
@@ -67,7 +67,7 @@ export default function ChatPanel({ setroomid, sessionId, handleSendMessage, soc
                 />
 
 
-                <h1 className="text-md sm:text-2xl semi-bold">{'Pizza Hutz  1150'}</h1>
+                <h1 className="text-md sm:text-2xl semi-bold">{sessionId}</h1>
                 <div className={`w-[10px] h-[10px] rounded-full ${getBackgroundColor()} ${styleState ? 'animate-ping' : ''} `}></div>
                 {
                     !styleState ? <div className="text-md text-slate-500 relative -left-[1%]">จะรีบติดต่อกลับทันที</div> : ''
