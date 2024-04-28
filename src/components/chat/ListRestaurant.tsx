@@ -23,7 +23,7 @@ export default function ListRestaurant({
     handleJoin,
     socket,
     setMessageList,
-}: ListRestaurantProps) {
+}: ListRestaurantProps ) {
     const [restaurantsDetails, setRestaurantsDetails] = useState<any[]>([]);
     const [usersDetails, setUsersDetails] = useState<any[]>([]);
     const { data: session } = useSession();
@@ -76,6 +76,13 @@ export default function ListRestaurant({
         setUsersDetails(users);
     };
 
+    // restaurantsDetails.map((restaurant) => {
+    //     console.log(restaurant.details?.name, restaurant.details?.imageUrl);
+    //     return null; // Assuming you don't need to return a modified array
+    // });
+
+    console.log(usersDetails + 'this is user detail')
+    console.log(restaurantsDetails + 'this is restaurant detail')
     return (
         <div className="w-full h-full flex flex-col gap-3">
             <div className="px-3 flex gap-1 sm:max-xl:gap-0">

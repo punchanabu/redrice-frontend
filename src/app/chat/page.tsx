@@ -10,7 +10,7 @@ import { CustomSocketOptions } from "@/types/chat";
 import { sessionRoom } from "@/types/chat";
 import { Socket } from "socket.io-client";
 export default function Chat() {    
-    
+    const [chatData, setChatData] = useState<{ imageUrl: string, name: string }>({ imageUrl: '', name: '' });
     // State 
     // Room ID we are currently in
     const [roomID, setRoomID] = useState<string>("");
@@ -110,7 +110,6 @@ export default function Chat() {
         socket.on('disconnect', handleDisconnect)
     }, [socket]);
      
-
     
     return (
         
@@ -119,7 +118,7 @@ export default function Chat() {
                 <ListRestaurant  setroomid={setRoomID} data = {RoomList} handleJoin ={handleJoin} socket={socket} setMessageList = {setMessageList}></ListRestaurant>
             </div>
             <div className={`sm:w-2/3 h-[100%] sm:border-t border-slate-300 ${roomID!==''?'inline-block ':'hidden sm:hidden'} `}>
-                <ChatPanel setroomid={setRoomID} sessionId= {roomID} handleSendMessage={handleSendMessage} socket={socket} messageList = {messageList}></ChatPanel>
+                <ChatPanel setroomid={setRoomID} sessionId= {roomID} handleSendMessage={handleSendMessage} socket={socket} messageList = {messageList} chatData={chatData} ></ChatPanel>
             </div>
         </main>
   )

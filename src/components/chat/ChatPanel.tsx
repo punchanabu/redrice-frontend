@@ -1,13 +1,15 @@
 'use client'
 import { IoMdSend } from "react-icons/io";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoIosArrowBack } from "react-icons/io";
 import { useRef } from "react";
 import io from 'socket.io-client';
 import { useSession } from 'next-auth/react';
 import { CustomSocketOptions } from "@/types/chat";
 import { Socket } from "socket.io-client";
+import { getUserById } from "@/lib/auth";
+import { getOneRestaurant } from "@/lib/restaurant";
 
 interface Message {
     fromUserId: string;
@@ -21,8 +23,9 @@ interface ChatPanelProps {
     handleSendMessage: (sessionId: string, message: string, socket: Socket) => void;
     socket: Socket | null;
     messageList: Message[] | string[];
+    chatData: { imageUrl: string, name: string };
 }
-export default function ChatPanel({ setroomid, sessionId, handleSendMessage, socket, messageList }: ChatPanelProps) {
+export default function ChatPanel({ setroomid, sessionId, handleSendMessage, socket, messageList, chatData  }: ChatPanelProps) {
 
     const [styleState, setStyleState] = useState(true)
     const [reservationState] = useState<boolean>(styleState);
@@ -51,20 +54,20 @@ export default function ChatPanel({ setroomid, sessionId, handleSendMessage, soc
         handleSendMessage(sessionId, message, socket)
     }
 
+
     return (
         <div className="w-full h-full flex flex-col relative">
             <div className="h-20 w-full border-b border-slate-300 flex p-1 px-3 items-center gap-4 tablet:gap-6">
                 <IoIosArrowBack className="text-3xl text-white bg-slate-500 p-1 rounded-full sm:hidden hover:bg-slate-300" onClick={() => setroomid()}></IoIosArrowBack>
                 <Image
-                    src={'/img/user/user1.png'}
+                    src={chatData.imageUrl}
                     alt="Product Picture"
                     width={60}
                     height={60}
                     className="h-full object-contain rounded-full flex items-center "
                 />
-
-
-                <h1 className="text-md sm:text-2xl semi-bold">{sessionId}</h1>
+                
+                <h1 className="text-md sm:text-2xl semi-bold">{chatData.name}</h1>
                 <div className={`w-[10px] h-[10px] rounded-full ${getBackgroundColor()} ${styleState ? 'animate-ping' : ''} `}></div>
                 {
                     !styleState ? <div className="text-md text-slate-500 relative -left-[1%]">จะรีบติดต่อกลับทันที</div> : ''
