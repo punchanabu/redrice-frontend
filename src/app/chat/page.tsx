@@ -76,6 +76,7 @@ export default function Chat() {
     const handleJoin = (sessionId: string, socket: Socket) => {
         console.log(sessionId);
         socket.emit("join chat", sessionId);
+        setMessageList([])
     }
 
     const handleSendMessage = (sessionId: string, message: string, socket: Socket) => {
