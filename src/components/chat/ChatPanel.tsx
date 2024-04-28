@@ -107,10 +107,9 @@ export default function ChatPanel({
             </div>
             {/* punch fix */}
             <div className="w-full h-[calc(100%-136px)] py-2 px-4 overflow-y-auto">
-                {/* {messageList.map((message, index) => (
+                {messageList.map((message, index) => (
                     <div
                         key={index}
-                        className="mb-4 py-2 px-4 bg-redrice-blue rounded-3xl text-white"
                     >
                         {typeof message === 'string' ? (
                             <div>{message}</div>
@@ -119,21 +118,26 @@ export default function ChatPanel({
                                 <div className="font-bold">
                                     {message.fromUserId}
                                 </div>
-                                <div>{message.message}</div>
+                                {/* <div>{message.message}</div> */}
+                                <ChatMessage
+                                    key={index}
+                                    message={message.message}
+                                    isSender={true}
+                                />
                                 <div className="text-sm text-gray-500">
                                     {message.timeStamp}
                                 </div>
                             </>
                         )}
                     </div>
-                ))} */}
-                {messages.map((msg, index) => (
+                ))}
+                {/* {messages.map((msg, index) => (
                     <ChatMessage
                         key={index}
                         message={msg.text}
                         isSender={msg.isSender}
                     />
-                ))}
+                ))} */}
             </div>
             {/*  */}
             <div className="h-10 w-[98%] wborder-slate-300 flex items-center justify-between gap-2 p-1 pr-5 rounded-full bg-slate-100 mr-10 absolute left-[1%] bottom-[2%]">
