@@ -40,10 +40,9 @@ export default function ListRestaurant({
                 const promises = data.map(async (item: any) => {
                     try {
                         if (item.restaurantId) {
-                            const fetchedRestaurant = await getOneRestaurant(
-                                item.restaurantId.toString(),
-                                token
-                            );
+                            const fetchedUser = await getUserById(token, item.restaurantId);
+                            const fetchedRestaurant = await getOneRestaurant(fetchedUser.restaurant_id, token);
+                            console.log(fetchedRestaurant);
                             return { ...item, details: fetchedRestaurant };
                         } else if (item.userId) {
                             const fetchedUser = await getUserById(token, item.userId);
@@ -58,7 +57,6 @@ export default function ListRestaurant({
                 const itemsWithDetails = await Promise.all(promises);
                 const restaurants = itemsWithDetails.filter((item) => item.restaurantId);
                 const users = itemsWithDetails.filter((item) => item.userId);
-
                 setRestaurantsDetails(restaurants);
                 setUsersDetails(users);
             }

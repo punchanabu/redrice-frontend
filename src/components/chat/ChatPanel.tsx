@@ -10,6 +10,7 @@ import { useSession } from 'next-auth/react';
 import { CustomSocketOptions } from '@/types/chat';
 import { Socket } from 'socket.io-client';
 import ChatMessage from './ChatMessage';
+import { FaUserAlt } from "react-icons/fa";
 
 interface Message {
     fromUserId: string;
@@ -82,20 +83,21 @@ export default function ChatPanel({ setroomid, sessionId, handleSendMessage, soc
                     className="text-3xl text-white bg-slate-500 p-1 rounded-full sm:hidden hover:bg-slate-300"
                     onClick={() => setroomid()}
                 ></IoIosArrowBack>
-                <Image
-                    src={chatData.imageUrl}
+                {chatData.imageUrl? (
+                    <Image
+                    src={chatData.imageUrl }
                     alt="Product Picture"
                     width={60}
                     height={60}
                     className="h-full object-contain rounded-full flex items-center "
-                />
+                    />
+                ) : (
+                    <div className="m-5 relative rounded-full bg-stone-200 border-stone-300 border-4 border-black hover:border-redrice-yellow p-2 text-2xl hover:text-redrice-yellow">
+                        <FaUserAlt color = "grey"/>
+                    </div>
+                )}
 
-                <h1 className="text-md sm:text-2xl semi-bold">{chatData.name}</h1>
-                <div className={`w-[10px] h-[10px] rounded-full ${getBackgroundColor()} ${styleState ? 'animate-ping' : ''} `}></div>
-                {
-                    !styleState ? <div className="text-md text-slate-500 relative -left-[1%]">จะรีบติดต่อกลับทันที</div> : ''
-                }
-                <h1 className="text-md sm:text-2xl semi-bold">{sessionId}</h1>
+                <h1 className="text-md sm:text-2xl semi-bold">{chatData.name || 'unknown'}</h1>
                 <div
                     className={`w-[10px] h-[10px] rounded-full ${getBackgroundColor()} ${styleState ? 'animate-ping' : ''} `}
                 ></div>
