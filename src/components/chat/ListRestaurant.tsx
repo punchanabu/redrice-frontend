@@ -15,6 +15,7 @@ interface ListRestaurantProps {
     handleJoin: (sessionId: any, socket: any) => void;
     socket: Socket | null;
     setMessageList: (newMessageList: any) => void;
+    onRoomSelected: (restaurantData: { imageUrl: string, name: string }) => void;
 }
 
 export default function ListRestaurant({
@@ -23,9 +24,12 @@ export default function ListRestaurant({
     handleJoin,
     socket,
     setMessageList,
+    onRoomSelected
 }: ListRestaurantProps ) {
     const [restaurantsDetails, setRestaurantsDetails] = useState<any[]>([]);
     const [usersDetails, setUsersDetails] = useState<any[]>([]);
+    const [chatData, setChatData] = useState<{ imageUrl: string, name: string }>({ imageUrl: '', name: '' });
+
     const { data: session } = useSession();
     const token = session?.user.token;
 
@@ -76,13 +80,22 @@ export default function ListRestaurant({
         setUsersDetails(users);
     };
 
+    const handleRoomSelected = (restaurant: { imageUrl: string, name: string } ) => {
+        // Update chatData state with restaurant details
+        onRoomSelected(restaurant);
+    };
+
+    // const handleRoomOnClick = (restaurantData: { imageUrl: string, name: string }) => {
+    //     onRoomSelected(restaurantData); // Emit selected restaurant data to parent component
+    // };
+
     // restaurantsDetails.map((restaurant) => {
     //     console.log(restaurant.details?.name, restaurant.details?.imageUrl);
     //     return null; // Assuming you don't need to return a modified array
     // });
 
-    console.log(usersDetails + 'this is user detail')
-    console.log(restaurantsDetails + 'this is restaurant detail')
+    // console.log(usersDetails + 'this is user detail')
+    // console.log(restaurantsDetails + 'this is restaurant detail')
     return (
         <div className="w-full h-full flex flex-col gap-3">
             <div className="px-3 flex gap-1 sm:max-xl:gap-0">
@@ -104,7 +117,13 @@ export default function ListRestaurant({
                     <div
                         key={restaurant.sessionId}
                         className="hover:bg-slate-100 p-3 flex gap-2 cursor-pointer"
-                        onClick={() => handleRoomClick(restaurant.sessionId)}
+                        onClick={() => {
+                            handleRoomClick(restaurant.sessionId),  
+                            handleRoomSelected({
+                                imageUrl: restaurant.details?.imageUrl || '',
+                                name: restaurant.details?.name || ''
+                            });
+                        }}
                     >
                         <div className="w-1/6 flex items-center">
                             <Image
@@ -133,7 +152,13 @@ export default function ListRestaurant({
                     <div
                         key={user.sessionId}
                         className="hover:bg-slate-100 p-3 flex gap-2 cursor-pointer"
-                        onClick={() => handleRoomClick(user.sessionId)}
+                        onClick={() => {
+                            handleRoomClick(user.sessionId);                        
+                            handleRoomSelected({
+                                imageUrl: user.details?.imageUrl || '/img/user/user1.png',
+                                name: user.details?.name || 'Unknown'
+                            });                        
+                        }}
                     >
                         <div className="w-1/6 flex items-center">
                             <Image

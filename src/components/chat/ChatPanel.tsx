@@ -66,7 +66,7 @@ export default function ChatPanel({ setroomid, sessionId, handleSendMessage, soc
                     height={60}
                     className="h-full object-contain rounded-full flex items-center "
                 />
-                
+
                 <h1 className="text-md sm:text-2xl semi-bold">{chatData.name}</h1>
                 <div className={`w-[10px] h-[10px] rounded-full ${getBackgroundColor()} ${styleState ? 'animate-ping' : ''} `}></div>
                 {
