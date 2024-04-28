@@ -52,8 +52,6 @@ export default function ChatPanel({ setroomid, sessionId, handleSendMessage, soc
         handleSendMessage(sessionId, message, socket)
     }
 
-
-
     return (
         <div className="w-full h-full flex flex-col relative">
             <div className="h-20 w-full border-b border-slate-300 flex p-1 px-3 items-center gap-4 tablet:gap-6">
@@ -65,8 +63,6 @@ export default function ChatPanel({ setroomid, sessionId, handleSendMessage, soc
                     height={60}
                     className="h-full object-contain rounded-full flex items-center "
                 />
-
-
                 <h1 className="text-md sm:text-2xl semi-bold">{'Pizza Hutz  1150'}</h1>
                 <div className={`w-[10px] h-[10px] rounded-full ${getBackgroundColor()} ${styleState ? 'animate-ping' : ''} `}></div>
                 {
@@ -97,14 +93,8 @@ export default function ChatPanel({ setroomid, sessionId, handleSendMessage, soc
                     </div>
                 )}
                 <div className="w-[10%] flex items-center justify-end gap-2">
-
-                    <div>
-
-                    </div>
                     <IoMdSend className="text-2xl text-redrice-blue hover:text-sky-800" onClick={sendMessage} />
                 </div>
-
-
             </div>
         </div>
     )
