@@ -8,6 +8,7 @@ import { getOneRestaurant } from '@/lib/restaurant';
 import { getUserById } from '@/lib/auth';
 import  DataFilter from '@/types/searchbox';
 import { sessionRoom } from "@/types/chat";
+import { FaUserAlt } from 'react-icons/fa';
 
 interface ListRestaurantProps {
     setroomid: Function;
@@ -126,6 +127,7 @@ export default function ListRestaurant({
                         }}
                     >
                         <div className="w-1/6 flex items-center">
+                            {restaurant.details?.imageUrl ? (
                             <Image
                                 alt="Restaurant Image"
                                 width={60}
@@ -133,6 +135,10 @@ export default function ListRestaurant({
                                 src={restaurant.details?.imageUrl || '/img/user/user1.png'}
                                 className="h-full object-contain rounded-full flex items-center"
                             />
+                            ) : 
+                            <div className="relative bg-stone-200 rounded-full bg-grey-200 border-4 border-stone-300 hover:border-redrice-yellow p-2 text-2xl hover:text-redrice-yellow">
+                                            <FaUserAlt color='grey'/>
+                            </div>} 
                         </div>
                         <div className="w-2/3 flex flex-col">
                             <h1 className="w-full line-clamp-1 text-redrice-yellow">

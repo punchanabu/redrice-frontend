@@ -108,8 +108,8 @@ const Navbar = () => {
                                         href={'/chat'}
                                         onClick={playSound}
                                     >
-                                        <div className="relative rounded-full  hover:border-redrice-yellow p-2 text-3xl hover:text-redrice-yellow ">
-                                            <AiFillMessage />
+                                        <div className="relative rounded-full hover:border-redrice-yellow p-2 text-3xl hover:text-redrice-yellow ">
+                                            <AiFillMessage color='rgb(68 64 60)'/>
                                         </div>
                                     </Link>
 
@@ -117,8 +117,8 @@ const Navbar = () => {
                                         href={'/profile'}
                                         onClick={playSound}
                                     >
-                                        <div className="relative rounded-full border-4 border-black hover:border-redrice-yellow p-2 text-2xl hover:text-redrice-yellow">
-                                            <FaUserAlt />
+                                        <div className="relative bg-stone-200 rounded-full bg-grey-200 border-4 border-stone-300 hover:border-redrice-yellow p-2 text-2xl hover:text-redrice-yellow">
+                                            <FaUserAlt color='grey'/>
                                         </div>
                                     </Link>
                                     <button
