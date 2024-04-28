@@ -12,6 +12,7 @@ import { sessionRoom } from "@/types/chat";
 import { useSession } from "next-auth/react"
 import { getOneRestaurant } from "@/lib/restaurant"
 import Restaurant from "@/types/restaurant"
+import { FiDatabase } from "react-icons/fi"
 
 const mockdata:Array<{roomid:string,name:string,img:string,msg:string,time:string}>=[{roomid:'1',name:'Pizza Hutz  1150',img:'',msg:'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Beatae, laboriosam.',time:'10:30 AM'},{roomid:'2',name:'Momo',img:'',msg:'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Beatae, laboriosam.',time:'10:30 AM'},{roomid:'3',name:'7-11',img:'',msg:'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Beatae, laboriosam.',time:'10:30 AM'},{roomid:'4',name:'Tenya',img:'',msg:'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Beatae, laboriosam.',time:'10:30 AM'},{roomid:'',name:'Yayoi',img:'',msg:'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Beatae, laboriosam.',time:'10:30 AM'}]
 
@@ -33,6 +34,7 @@ export default function ListRestaurant({ setroomid,data, handleJoin, socket, set
     const [restaurantsDetails, setRestaurantsDetails] = useState<any[]>([]);
     const { data: session } = useSession();
     const token = session?.user.token;
+    
 
 
     //Fetch restaurant from getOneRestaurant for using Restaurant Schema
@@ -84,23 +86,28 @@ export default function ListRestaurant({ setroomid,data, handleJoin, socket, set
             </div>
           </div>
     
-          <div className="w-full overflow-x-auto">
+          <div className="w-full overflow-x-auto ">
             {restaurantsDetails.map((restaurant: any) => (
+              
               <div
                 key={restaurant.sessionId}
-                className="hover:bg-slate-100 p-3 flex gap-2 cursor-pointer"
+                className="hover:bg-slate-100 p-3 flex gap-2 cursor-pointer h-[80px]"
                 onClick={() => handleRoomClick(restaurant.sessionId)}
               >
-                <div className="w-1/6 flex items-center">
+                {}
+               
+                <div className="w-1/6  flex items-center justify-center">
+                <div className="relative h-full  aspect-square rounded-full overflow-hidden">
                   <Image
-                    alt="Restaurant Image"
-                    width={60}
-                    height={60}
-                    src={restaurant.details.imageUrl}
-                    className="h-full object-contain rounded-full flex items-center"
+                    src={'https://static-cse.canva.com/blob/1355484/tools-feature_crop-image_hero_mobile_2x.jpg'}
+                    alt={`${restaurant.details.name} Restaurant Image`}
+                    fill
+                    sizes="90"
+                    className="object-cover"
                   />
                 </div>
-                <div className="w-2/3 flex flex-col">
+              </div>
+                <div className="w-2/3 flex flex-col bg-black">
                   <h1 className="w-full line-clamp-1 text-redrice-yellow">{restaurant.details.name}</h1>
                   <h1 className="w-full line-clamp-1 text-slate-300 bold">
                     Start a Conversation

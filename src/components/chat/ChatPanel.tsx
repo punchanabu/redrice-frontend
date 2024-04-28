@@ -8,6 +8,16 @@ import io from 'socket.io-client';
 import { useSession } from 'next-auth/react';
 import { CustomSocketOptions } from "@/types/chat";
 import { Socket } from "socket.io-client";
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';// Assuming utc.ts is in the same directory
+import timezone from 'dayjs/plugin/timezone';
+
+// Register the plugin
+ 
+import { RiH1 } from "react-icons/ri";
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
 
 interface Message {
     fromUserId: string;
@@ -51,38 +61,62 @@ export default function ChatPanel({ setroomid, sessionId, handleSendMessage, soc
         handleSendMessage(sessionId, message, socket)
     }
 
+    const  messageList2 : Message[] =[{fromUserId: 'user',message: 'hello1',timeStamp: '1699964234234'},{fromUserId: 'user',message: 'hello2',timeStamp: '1699966934294'},{fromUserId: 'user',message: 'hello3',timeStamp: '1699997934294'},{fromUserId: 'user',message: 'hello4',timeStamp: '1700998934294'}]
+
 
 
     return (
         <div className="w-full h-full flex flex-col relative">
             <div className="h-20 w-full border-b border-slate-300 flex p-1 px-3 items-center gap-4 tablet:gap-6">
-                <IoIosArrowBack className="text-3xl text-white bg-slate-500 p-1 rounded-full sm:hidden hover:bg-slate-300" onClick={() => setroomid()}></IoIosArrowBack>
-                <Image
-                    src={'/img/user/user1.png'}
-                    alt="Product Picture"
-                    width={60}
-                    height={60}
-                    className="h-full object-contain rounded-full flex items-center "
-                />
+                <IoIosArrowBack className="text-3xl text-white bg-slate-500 p-1 rounded-full sm:hidden hover:bg-slate-300" onClick={() => setroomid('')}></IoIosArrowBack>
+                <div className="h-full aspect-square  rounded-full ">
+                    <Image
+                        src={'/img/user/user1.png'}
+                        alt="Product Picture"
+                        width={60}
+                        height={60}
+                        sizes="80"
+                        className="h-full w-auto rounded-full  bg-contain "
+                    />
+                </div>
+                
 
 
                 <h1 className="text-md sm:text-2xl semi-bold">{sessionId}</h1>
-                <div className={`w-[10px] h-[10px] rounded-full ${getBackgroundColor()} ${styleState ? 'animate-ping' : ''} `}></div>
+                <div className={`w-[10px] h-[10px] rounded-full ${getBackgroundColor()} ${styleState?'animate-ping' : ''} `}></div>
                 {
                     !styleState ? <div className="text-md text-slate-500 relative -left-[1%]">จะรีบติดต่อกลับทันที</div> : ''
                 }
             </div>
             <div className="w-full h-[calc(100%-136px)] py-2 px-4 overflow-y-auto">
+            {messageList.length > 0 && (
+        <h1 className="text-center text-slate-500">
+            
+            {dayjs(new Date(parseInt((messageList as Message[])[0]?.timeStamp))).format('D MMM YYYY')}
+            
+        </h1>
+    )}
+                
+
                 {messageList.map((message, index) => (
+                    
                     <div key={index} className="mb-4">
+                        {(Math.abs(parseInt(dayjs(new Date(parseInt((message as Message).timeStamp))).format('D')))-(parseInt(dayjs(new Date(parseInt((messageList as Message[])[index-1]?.timeStamp))).format('D'))) >0 
+                        && <h1 className="text-center text-slate-500">{dayjs(new Date(parseInt((message as Message).timeStamp))).format('D MMM YYYY')}</h1>  )
+                        }
+              
                         {typeof message === 'string' ? (
                             <div>{message}</div>
                         ) : (
-                            <>
+                            
+                            <div className="border border-1 rounded-lg">
+                                
+                                
                                 <div className="font-bold">{message.fromUserId}</div>
                                 <div>{message.message}</div>
-                                <div className="text-sm text-gray-500">{message.timeStamp}</div>
-                            </>
+                                <div className="text-sm text-gray-500">{dayjs(new Date(parseInt(message.timeStamp))).utc().tz('Asia/Bangkok').format('HH:mm') }</div>
+
+                            </div>
                         )}
                     </div>
                 ))}
