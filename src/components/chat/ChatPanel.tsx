@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
-import { getUserById } from "@/lib/auth";
-import { getOneRestaurant } from "@/lib/restaurant";
+'use client';
 import { IoMdSend } from 'react-icons/io';
 import Image from 'next/image';
+import { useState } from 'react';
 import { IoIosArrowBack } from 'react-icons/io';
 import { useRef } from 'react';
 import io from 'socket.io-client';
@@ -27,12 +26,15 @@ interface ChatPanelProps {
     ) => void;
     socket: Socket | null;
     messageList: Message[] | string[];
-    chatData: { imageUrl: string, name: string };
 }
-
-export default function ChatPanel({ setroomid, sessionId, handleSendMessage, socket, messageList, chatData  }: ChatPanelProps) {
-
-    const [styleState, setStyleState] = useState(true) 
+export default function ChatPanel({
+    setroomid,
+    sessionId,
+    handleSendMessage,
+    socket,
+    messageList,
+}: ChatPanelProps) {
+    const [styleState, setStyleState] = useState(true);
     const [reservationState] = useState<boolean>(styleState);
     const [message, setMessage] = useState('');
     // TODO: remove this
@@ -75,6 +77,7 @@ export default function ChatPanel({ setroomid, sessionId, handleSendMessage, soc
         }
     };
     //
+
     return (
         <div className="w-full h-full flex flex-col relative">
             <div className="h-20 w-full border-b border-slate-300 flex p-1 px-3 items-center gap-4 tablet:gap-6">
@@ -83,18 +86,13 @@ export default function ChatPanel({ setroomid, sessionId, handleSendMessage, soc
                     onClick={() => setroomid()}
                 ></IoIosArrowBack>
                 <Image
-                    src={chatData.imageUrl}
+                    src={'/img/user/user1.png'}
                     alt="Product Picture"
                     width={60}
                     height={60}
                     className="h-full object-contain rounded-full flex items-center "
                 />
 
-                <h1 className="text-md sm:text-2xl semi-bold">{chatData.name}</h1>
-                <div className={`w-[10px] h-[10px] rounded-full ${getBackgroundColor()} ${styleState ? 'animate-ping' : ''} `}></div>
-                {
-                    !styleState ? <div className="text-md text-slate-500 relative -left-[1%]">จะรีบติดต่อกลับทันที</div> : ''
-                }
                 <h1 className="text-md sm:text-2xl semi-bold">{sessionId}</h1>
                 <div
                     className={`w-[10px] h-[10px] rounded-full ${getBackgroundColor()} ${styleState ? 'animate-ping' : ''} `}
@@ -165,7 +163,11 @@ export default function ChatPanel({ setroomid, sessionId, handleSendMessage, soc
                     </div>
                 )}
                 <div className="w-[10%] flex items-center justify-end gap-2">
-                    <IoMdSend className="text-2xl text-redrice-blue hover:text-sky-800" onClick={sendMessage} />
+                    <div></div>
+                    <IoMdSend
+                        className="text-2xl text-redrice-blue hover:text-sky-800"
+                        onClick={sendMessage}
+                    />
                 </div>
             </div>
         </div>
