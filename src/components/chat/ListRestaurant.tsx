@@ -40,6 +40,7 @@ export default function ListRestaurant({
                 const promises = data.map(async (item: any) => {
                     try {
                         if (item.restaurantId) {
+                            // This is intentional dont change its a miscommunicate from backend
                             const fetchedUser = await getUserById(token, item.restaurantId);
                             const fetchedRestaurant = await getOneRestaurant(fetchedUser.restaurant_id, token);
                             console.log(fetchedRestaurant);
