@@ -136,7 +136,7 @@ export default function ChatPanel({
                     </div>
                 )}
 
-                <h1 className="text-md sm:text-2xl semi-bold line-clamp-1">{sessionId}</h1>
+                <h1 className="text-md sm:text-2xl semi-bold line-clamp-1">{chatData.name}</h1>
                 <div
                     className={`w-[10px] h-[10px] rounded-full ${getBackgroundColor()} ${styleState ? 'animate-ping' : ''} `}
                 ></div>
