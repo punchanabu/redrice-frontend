@@ -23,6 +23,7 @@ const Navbar = () => {
 
     const handleNotification = (message: any) => {
         console.log("Notification: ", message);
+        if (message.fromUserId === session?.user?.id) return;
         setNotification(message);
         setShowNotification(true);
     }
