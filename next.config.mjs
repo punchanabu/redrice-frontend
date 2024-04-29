@@ -21,6 +21,11 @@ const nextConfig = {
                 protocol: 'https',
                 hostname: 'static.vecteezy.com',
                 port: '',
+            },{
+                protocol: 'https',
+                hostname: 'static-cse.canva.com',
+                port: '',
+                
             }
         ],
     },

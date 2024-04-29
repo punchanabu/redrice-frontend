@@ -16,6 +16,7 @@ interface ListRestaurantProps {
     handleJoin: (sessionId: any, socket: any) => void;
     socket: Socket | null;
     setMessageList: (newMessageList: any) => void;
+    readyChat:boolean;
     onRoomSelected: (restaurantData: { imageUrl: string, name: string }) => void;
 }
 
@@ -25,14 +26,17 @@ export default function ListRestaurant({
     handleJoin,
     socket,
     setMessageList,
-    onRoomSelected
-}: ListRestaurantProps ) {
+    onRoomSelected,
+    readyChat,
+}: ListRestaurantProps) {
     const [restaurantsDetails, setRestaurantsDetails] = useState<any[]>([]);
     const [usersDetails, setUsersDetails] = useState<any[]>([]);
     const [chatData, setChatData] = useState<{ imageUrl: string, name: string }>({ imageUrl: '', name: '' });
 
     const { data: session } = useSession();
     const token = session?.user.token;
+    console.log('socket  : ',socket);
+    
 
     useEffect(() => {
         const fetchDetails = async () => {
@@ -99,20 +103,32 @@ export default function ListRestaurant({
     return (
         <div className="w-full h-full flex flex-col gap-3">
             <div className="px-3 flex gap-1 sm:max-xl:gap-0">
-                <div className="w-[88%]">
+                <div className="w-[100%]">
                     {/* Render the Searchbox component and pass data and filter function */}
                     <Searchbox data={data as DataFilter[]} filter={handleFilterChange} />
                 </div>
-                <div className="p-0.5 text-center flex items-center relative">
+                {/* <div className="p-0.5 text-center flex items-center relative">
                     <BiMessageSquare className="text-gray-300 hover:text-gray-400 text-3xl" />
                     <div className="bg-red-600 text-xs rounded-full px-1 text-white absolute top-1 left-[50%] border-2 border-white">
                         {`100`}
                     </div>
-                </div>
+                </div> */}
             </div>
 
             <div className="w-full overflow-x-auto">
                 {/* Render restaurants or users based on filtered details */}
+
+                {
+                readyChat  ? (<h1 className='text-center text-slate-500' >
+                    ...
+                </h1>)
+                :
+                (<h1 className='text-center text-slate-500'>
+                    This service is currently unavailable. Please try again in a few minutes.
+                </h1>)
+            }
+
+
                 {restaurantsDetails.map((restaurant) => (
                     <div
                         key={restaurant.sessionId}
@@ -128,10 +144,11 @@ export default function ListRestaurant({
                         <div className="w-1/6 flex items-center">
                             {restaurant.details?.imageUrl ? (
                             <Image
+                                src={restaurant.details?.imageUrl || '/img/user/user1.png'}
                                 alt="Restaurant Image"
                                 width={60}
                                 height={60}
-                                src={restaurant.details?.imageUrl || '/img/user/user1.png'}
+                                sizes="90"
                                 className="h-full object-contain rounded-full flex items-center"
                             />
                             ) : 
@@ -153,7 +170,7 @@ export default function ListRestaurant({
                     </div>
                 ))}
 
-                {usersDetails.map((user) => (
+                {/* {usersDetails.map((user) => (
                     <div
                         key={user.sessionId}
                         className="hover:bg-slate-100 p-3 flex gap-2 cursor-pointer"
@@ -170,6 +187,7 @@ export default function ListRestaurant({
                                 alt="User Image"
                                 width={60}
                                 height={60}
+                                sizes='90'
                                 src={user.details?.imageUrl || '/img/user/user1.png'}
                                 className="h-full object-contain rounded-full flex items-center"
                             />
@@ -184,7 +202,8 @@ export default function ListRestaurant({
                             <h1 className="text-slate-300 bold">{user.details?.time || 'N/A'}</h1>
                         </div>
                     </div>
-                ))}
+                ))} */}
+
             </div>
         </div>
     );
