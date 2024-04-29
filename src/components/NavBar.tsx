@@ -11,11 +11,8 @@ import { FaUserAlt } from 'react-icons/fa';
 import { AiFillMessage } from "react-icons/ai";
 import { Howl } from 'howler';
 import { Socket, io } from 'socket.io-client';
-import dynamic from 'next/dynamic';
+import Notification from './Notification';
 
-const Notification = dynamic(() => import('./Notification'), {
-  ssr: false,
-});
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [login, setLogin] = useState(false);
@@ -126,7 +123,7 @@ const Navbar = () => {
         <nav className="relative">
             <div className='w-full'>
             {showNotification && (
-                <Notification/>
+                <Notification key={Number(showNotification)}/>
             )}
             </div>
             <div className="mx-auto px-4 md:px-6">
