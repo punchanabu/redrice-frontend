@@ -60,6 +60,9 @@ export default function Chat() {
         console.log(history);
         setHistoryMessage(history)
     }
+    const handleNotification = (message: string) => {
+        console.log("receive notification", message);
+    }
 
     const handleRoomChange = (roomid: string) => {
         setRoomID(roomid);
@@ -148,6 +151,7 @@ export default function Chat() {
         socket.on('receive message', handleReceiveMessage)
         socket.on('chat history', handleReceiveHistory)
         socket.on('error', handleError)
+        socket.on('notification', handleNotification)
         socket.emit('get my session', handleReceiveMessage);
         
         socket.on('disconnect', handleDisconnect)
