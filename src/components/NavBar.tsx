@@ -57,6 +57,9 @@ const Navbar = () => {
         if (session) {
             setLogin(true);
         }
+    }, [session]);
+    
+    useEffect(() => {
 
         if (!socket) {
             const socket = io('https://redrice-chat.onrender.com', {
