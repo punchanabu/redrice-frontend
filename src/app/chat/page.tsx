@@ -30,6 +30,8 @@ export default function Chat() {
     // Message List
     const [messageList, setMessageList] = useState<string[]>([])
 
+    const [historyMessage, setHistoryMessage] = useState<any[]>([])
+
     const { data: session } = useSession();
     const token = session?.user.token;
     const role = session?.user.role;
@@ -78,6 +80,14 @@ export default function Chat() {
         return data;
     }
 
+    const handleGetHistory = async (sessionId: string,socket: Socket) => {
+        socket.emit("chat history", sessionId)
+    }
+
+    const handleReceiveHistory = (history: any) => {
+        console.log(history);
+    }
+
     const handleJoin = (sessionId: string, socket: Socket) => {
         console.log(sessionId);
         socket.emit("join chat", sessionId);
@@ -109,7 +119,7 @@ export default function Chat() {
 
         socket.on('connect', handleConnection);
         socket.on('session', handleSession);
-        socket.on('receive message', handleReceiveMessage)
+        socket.on("chat history", handleReceiveHistory)
         socket.on('error', handleError)
         socket.emit('get my session', handleReceiveMessage);
         socket.on('disconnect', handleDisconnect)
@@ -123,7 +133,7 @@ export default function Chat() {
                 <ListRestaurant  setroomid={setRoomID} data = {RoomList} handleJoin ={handleJoin} socket={socket} setMessageList = {setMessageList} onRoomSelected={handleRoomSelected}></ListRestaurant>
             </div>
             <div className={`sm:w-2/3 h-[100%] sm:border-t border-slate-300 ${roomID!==''?'inline-block ':'hidden sm:hidden'} `}>
-                <ChatPanel setroomid={setRoomID} sessionId= {roomID} handleSendMessage={handleSendMessage} socket={socket} messageList = {messageList} chatData={chatData} ></ChatPanel>
+                <ChatPanel setroomid={setRoomID} sessionId= {roomID} handleSendMessage={handleSendMessage} socket={socket} messageList = {messageList} chatData={chatData} handleGetHistory={handleGetHistory} historyMessage = {historyMessage}></ChatPanel>
             </div>
         </main>
   )

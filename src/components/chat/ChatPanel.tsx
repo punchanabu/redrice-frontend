@@ -29,9 +29,11 @@ interface ChatPanelProps {
     socket: Socket | null;
     messageList: Message[] | string[];
     chatData: { imageUrl: string, name: string };
+    handleGetHistory: (sessionId: string, socket: Socket) => void;
+    historyMessage: any[];
 }
 
-export default function ChatPanel({ setroomid, sessionId, handleSendMessage, socket, messageList, chatData  }: ChatPanelProps) {
+export default function ChatPanel({ setroomid, sessionId, handleSendMessage, socket, messageList, chatData, handleGetHistory, historyMessage }: ChatPanelProps) {
 
     const [styleState, setStyleState] = useState(true) 
     const [reservationState] = useState<boolean>(styleState);
@@ -50,6 +52,13 @@ export default function ChatPanel({ setroomid, sessionId, handleSendMessage, soc
                 return 'bg-gray-800';
         }
     };
+
+    useEffect(() => {
+        if (!socket) return;
+        handleGetHistory(sessionId, socket);
+    }, [sessionId, socket]);
+
+   
 
     const sendMessage = () => {
         if (message == '' || !socket) {
