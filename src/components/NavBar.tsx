@@ -11,8 +11,11 @@ import { FaUserAlt } from 'react-icons/fa';
 import { AiFillMessage } from "react-icons/ai";
 import { Howl } from 'howler';
 import { Socket, io } from 'socket.io-client';
-import Notification from './Notification';
+import dynamic from 'next/dynamic';
 
+const Notification = dynamic(() => import('./Notification'), {
+  ssr: false,
+});
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [login, setLogin] = useState(false);
