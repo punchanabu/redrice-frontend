@@ -25,7 +25,8 @@ interface Message {
     msg: string;
     senderId: string;
     createdAt: string;
-    updatedAt:string
+    updatedAt:string;
+    
 }
 
 interface ChatPanelProps {
@@ -41,7 +42,8 @@ interface ChatPanelProps {
     messageList: Message[] | string[];
     handleGetHistory: (sessionId: string, socket: Socket) => void;
     historyMessage: any[];
-    userId:string
+    userId:string;
+    readyChat:boolean;
 }
 export default function ChatPanel({
 
@@ -50,7 +52,7 @@ export default function ChatPanel({
     handleSendMessage,
     socket,
     messageList,
-    handleGetHistory, historyMessage,userId
+    handleGetHistory, historyMessage,userId,readyChat
 }: ChatPanelProps) {
     const [styleState, setStyleState] = useState(true);
     const [reservationState] = useState<boolean>(styleState);
@@ -131,6 +133,18 @@ export default function ChatPanel({
                 )}
             </div>
             {/* punch fix */}
+
+            {
+                readyChat ? (<h1 className='text-center text-slate-500' >
+                    y
+                </h1>)
+                :
+                (<h1 className='text-center text-slate-500 '>
+                    Can`t send chat this time
+                </h1>)
+            }
+
+
             <div className="w-full h-[calc(100%-136px)] py-2 px-4 overflow-y-auto">
             {historyMessage.length > 0 ? (
         <h1 className="text-center text-slate-500">
@@ -138,8 +152,9 @@ export default function ChatPanel({
           
         </h1>
     ) : (<h1 className='text-center text-slate-500'>
-        No chat available
+        No chat available 
     </h1>)}
+
                 {/* {messageList.map((message, index) => (
                     <div
                         key={index}

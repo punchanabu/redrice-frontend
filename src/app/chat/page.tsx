@@ -33,6 +33,7 @@ export default function Chat() {
     const role = session?.user.role;
 
     const [userId,setuserId]=useState('');
+    const [readyChat,setreadyChat]=useState(false)
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -68,6 +69,7 @@ export default function Chat() {
 
     const handleConnection = () => {
         console.log('Connecting to socket successfully!');
+        setreadyChat(true)
     }
 
     const handleSession = (roomList: any) => {
@@ -84,6 +86,7 @@ export default function Chat() {
 
     const handleDisconnect = () => {
         console.log("Disconnected from socket");
+        setreadyChat(false)
     }
 
     const handleError = (error: unknown) => {
@@ -148,10 +151,10 @@ export default function Chat() {
         
         <main className="w-full h-[calc(100%-96px)] flex">
             <div className={`sm:w-1/3 h-[100%] sm:border-t sm:border-r border-slate-300 pt-5 w-[100%] ${roomID!==''?'hidden sm:inline-block':'sm:inline-block'}`}>
-                <ListRestaurant  setroomid={setRoomID} data = {RoomList} handleJoin ={handleJoin} socket={socket} setMessageList = {setMessageList}></ListRestaurant>
+                <ListRestaurant  setroomid={setRoomID} data = {RoomList} handleJoin ={handleJoin} socket={socket} setMessageList = {setMessageList} readyChat={readyChat}></ListRestaurant>
             </div>
             <div className={`sm:w-2/3 h-[100%] sm:border-t border-slate-300 w-[100%] ${roomID!==''?'inline-block ':'hidden sm:hidden'} `}>
-                <ChatPanel  setroomid={setRoomID} sessionId= {roomID} handleSendMessage={handleSendMessage} socket={socket} messageList = {messageList} handleGetHistory={handleGetHistory} historyMessage = {historyMessage} userId={userId}></ChatPanel>
+                <ChatPanel  setroomid={setRoomID} sessionId= {roomID} handleSendMessage={handleSendMessage} socket={socket} messageList = {messageList} handleGetHistory={handleGetHistory} historyMessage = {historyMessage} userId={userId} readyChat={readyChat}></ChatPanel>
             </div>
         </main>
   )
