@@ -9,6 +9,7 @@ import { getOneRestaurant } from "@/lib/restaurant";
 import { CustomSocketOptions } from "@/types/chat";
 import { sessionRoom } from "@/types/chat";
 import { Socket } from "socket.io-client";
+import { getme } from "@/lib/auth";
 export default function Chat() {    
     
     // State 
@@ -25,10 +26,32 @@ export default function Chat() {
     // Message List
     const [messageList, setMessageList] = useState<string[]>([])
 
+    const [historyMessage, setHistoryMessage] = useState<any[]>([])
+
     const { data: session } = useSession();
     const token = session?.user.token;
     const role = session?.user.role;
+
+    const [userId,setuserId]=useState('');
+
+    useEffect(() => {
+        const fetchUsers = async () => {
+            if (session?.user.token) {
+                const user = await getme(session.user.token);
+                setuserId(user.id);
+            }
+        };
+        fetchUsers();
+    });
     
+    const handleGetHistory = async (sessionId: string,socket: Socket) => {
+        socket.emit("chat history", sessionId)
+    }
+
+    const handleReceiveHistory = (history: any) => {
+        console.log(history);
+        setHistoryMessage(history)
+    }
 
     const handleRoomChange = (roomid: string) => {
         setRoomID(roomid);
@@ -87,8 +110,13 @@ export default function Chat() {
         }
 
         socket.emit("send message", messageRequest)
+        
         console.log(message);
+        
     }
+
+
+
 
     useEffect(() => {
         if (!socket) {
@@ -106,10 +134,13 @@ export default function Chat() {
         socket.on('connect', handleConnection);
         socket.on('session', handleSession);
         socket.on('receive message', handleReceiveMessage)
+        socket.on('chat history', handleReceiveHistory)
         socket.on('error', handleError)
         socket.emit('get my session', handleReceiveMessage);
+        
         socket.on('disconnect', handleDisconnect)
     }, [socket]);
+    
      
 
     
@@ -120,7 +151,7 @@ export default function Chat() {
                 <ListRestaurant  setroomid={setRoomID} data = {RoomList} handleJoin ={handleJoin} socket={socket} setMessageList = {setMessageList}></ListRestaurant>
             </div>
             <div className={`sm:w-2/3 h-[100%] sm:border-t border-slate-300 w-[100%] ${roomID!==''?'inline-block ':'hidden sm:hidden'} `}>
-                <ChatPanel setroomid={setRoomID} sessionId= {roomID} handleSendMessage={handleSendMessage} socket={socket} messageList = {messageList}></ChatPanel>
+                <ChatPanel  setroomid={setRoomID} sessionId= {roomID} handleSendMessage={handleSendMessage} socket={socket} messageList = {messageList} handleGetHistory={handleGetHistory} historyMessage = {historyMessage} userId={userId}></ChatPanel>
             </div>
         </main>
   )

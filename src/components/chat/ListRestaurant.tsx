@@ -124,7 +124,7 @@ export default function ListRestaurant({
                     </div>
                 ))}
 
-                {usersDetails.map((user) => (
+                {/* {usersDetails.map((user) => (
                     <div
                         key={user.sessionId}
                         className="hover:bg-slate-100 p-3 flex gap-2 cursor-pointer"
@@ -150,7 +150,8 @@ export default function ListRestaurant({
                             <h1 className="text-slate-300 bold">{user.details?.time || 'N/A'}</h1>
                         </div>
                     </div>
-                ))}
+                ))} */}
+
             </div>
         </div>
     );

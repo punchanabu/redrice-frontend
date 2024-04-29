@@ -13,6 +13,7 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';// Assuming utc.ts is in the same directory
 import timezone from 'dayjs/plugin/timezone';
 import { motion } from 'framer-motion';
+import { useEffect } from 'react';
 // Register the plugin
  
 import { RiH1 } from "react-icons/ri";
@@ -20,12 +21,15 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 
 interface Message {
-    fromUserId: string;
-    message: string;
-    timeStamp: string;
+    id:string
+    msg: string;
+    senderId: string;
+    createdAt: string;
+    updatedAt:string
 }
 
 interface ChatPanelProps {
+
     setroomid: Function;
     sessionId: string;
     handleSendMessage: (
@@ -35,13 +39,18 @@ interface ChatPanelProps {
     ) => void;
     socket: Socket | null;
     messageList: Message[] | string[];
+    handleGetHistory: (sessionId: string, socket: Socket) => void;
+    historyMessage: any[];
+    userId:string
 }
 export default function ChatPanel({
+
     setroomid,
     sessionId,
     handleSendMessage,
     socket,
     messageList,
+    handleGetHistory, historyMessage,userId
 }: ChatPanelProps) {
     const [styleState, setStyleState] = useState(true);
     const [reservationState] = useState<boolean>(styleState);
@@ -49,6 +58,8 @@ export default function ChatPanel({
     // TODO: remove this
     const [image, setImage] = useState<File | null>(null);
     const [selectedImage, setSelectedImage] = useState(null);
+    const { data: session } = useSession();
+    
 
     const getBackgroundColor = () => {
         switch (reservationState) {
@@ -69,7 +80,7 @@ export default function ChatPanel({
         handleSendMessage(sessionId, message, socket);
         handleMessageSend();
     };
-    const  messageList2 : Message[] =[{fromUserId: 'user',message: 'hello1',timeStamp: '1699964234234'},{fromUserId: 'user',message: 'hello2',timeStamp: '1699966934294'},{fromUserId: 'user',message: 'hello3',timeStamp: '1699997934294'},{fromUserId: 'user',message: 'hello4',timeStamp: '1700998934294'}]
+    // const  messageList2 : Message[] =[{fromUserId: 'user',message: 'hello1',timeStamp: '1699964234234'},{fromUserId: 'user',message: 'hello2',timeStamp: '1699966934294'},{fromUserId: 'user',message: 'hello3',timeStamp: '1699997934294'},{fromUserId: 'user',message: 'hello4',timeStamp: '1700998934294'}]
     // punch fix
     // create useState for keep new message
     const [messages, setMessages] = useState([
@@ -86,6 +97,11 @@ export default function ChatPanel({
         }
     };
     //
+
+    useEffect(() => {
+        if (!socket) return;
+        handleGetHistory(sessionId, socket);
+    }, [sessionId, socket]);
 
     return (
         <div className="w-full h-full flex flex-col relative">
@@ -116,13 +132,14 @@ export default function ChatPanel({
             </div>
             {/* punch fix */}
             <div className="w-full h-[calc(100%-136px)] py-2 px-4 overflow-y-auto">
-            {messageList.length > 0 && (
+            {historyMessage.length > 0 ? (
         <h1 className="text-center text-slate-500">
-            
-            {dayjs(new Date(parseInt((messageList as Message[])[0]?.timeStamp))).format('D MMM YYYY')}
-            
+            {dayjs((((messageList as Message[])[0]?.createdAt))).format('D MMM YYYY')}
+          
         </h1>
-    )}
+    ) : (<h1 className='text-center text-slate-500'>
+        No chat available
+    </h1>)}
                 {/* {messageList.map((message, index) => (
                     <div
                         key={index}
@@ -143,21 +160,24 @@ export default function ChatPanel({
                         )}
                     </div>
                 ))} */}
-                {messageList.map((msg, index) => (
+                {historyMessage.map((msg, index) => (
                     <div key={index} >
-                        {(Math.abs(parseInt(dayjs(new Date(parseInt((msg as Message).timeStamp))).format('D')))-(parseInt(dayjs(new Date(parseInt((messageList as Message[])[index-1]?.timeStamp))).format('D'))) >0 
+                        {(Math.abs(parseInt(dayjs((((msg as Message).createdAt))).format('D')))-(parseInt(dayjs((((messageList as Message[])[index-1]?.createdAt))).format('D'))) >0 
                         && <div>
           
-                            <h1 className="text-center text-slate-500">{dayjs(new Date(parseInt((msg as Message).timeStamp))).format('D MMM YYYY')}</h1> 
+                            <h1 className="text-center text-slate-500">{dayjs((((msg as Message).createdAt))).format('D MMM YYYY')}</h1> 
                         </div>
                          )
                         }
                         
                         <ChatMessage
-                        message={(msg as Message).message}
-                        isSender={(msg as Message).fromUserId == '4'}
-                        timeStamp={(msg as Message).timeStamp}
+                        message={(msg as Message).msg}
+                        isSender={(msg as Message).senderId !==  ( userId)  }
+                        timeStamp={(msg as Message).createdAt}
+                        
                     />
+                        {/* <h1>{(msg as Message).fromUserId }</h1>
+                        <h1>{session?.user.ID}k</h1> */}
                     </div>
                     
                 ))}
@@ -182,6 +202,7 @@ export default function ChatPanel({
                             width={30}
                             height={30}
                         />
+                        
                         {/* Add buttons or actions for the selected image (optional) */}
                     </div>
                 )}

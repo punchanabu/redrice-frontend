@@ -47,6 +47,7 @@ const getme = async (token: string) => {
             }
         );
         const { data } = response;
+        console.log(data);
         return data;
     } catch (error) {
         console.error('Get all restaurant error:', error);
