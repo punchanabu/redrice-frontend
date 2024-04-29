@@ -69,7 +69,7 @@ const RestaurantCard = ({
     return (
         <div
             key={ID}
-            className="flex p-2 border-2 rounded-xl mx-2 w-1/2 flex-col shadow-md px-0"
+            className="flex p-2 border-2 rounded-xl mx-2 flex-col shadow-md px-0"
             style={{ minWidth: '300px', maxWidth: '600px' }}
         >
             <div className="h-[300px]">

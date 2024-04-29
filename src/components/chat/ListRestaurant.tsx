@@ -8,6 +8,7 @@ import { getOneRestaurant } from '@/lib/restaurant';
 import { getUserById } from '@/lib/auth';
 import  DataFilter from '@/types/searchbox';
 import { sessionRoom } from "@/types/chat";
+import { FaUserAlt } from 'react-icons/fa';
 
 interface ListRestaurantProps {
     setroomid: Function;
@@ -15,7 +16,8 @@ interface ListRestaurantProps {
     handleJoin: (sessionId: any, socket: any) => void;
     socket: Socket | null;
     setMessageList: (newMessageList: any) => void;
-    readyChat:boolean
+    readyChat:boolean;
+    onRoomSelected: (restaurantData: { imageUrl: string, name: string }) => void;
 }
 
 export default function ListRestaurant({
@@ -24,10 +26,13 @@ export default function ListRestaurant({
     handleJoin,
     socket,
     setMessageList,
+    onRoomSelected,
     readyChat,
 }: ListRestaurantProps) {
     const [restaurantsDetails, setRestaurantsDetails] = useState<any[]>([]);
     const [usersDetails, setUsersDetails] = useState<any[]>([]);
+    const [chatData, setChatData] = useState<{ imageUrl: string, name: string }>({ imageUrl: '', name: '' });
+
     const { data: session } = useSession();
     const token = session?.user.token;
     console.log('socket  : ',socket);
@@ -39,10 +44,10 @@ export default function ListRestaurant({
                 const promises = data.map(async (item: any) => {
                     try {
                         if (item.restaurantId) {
-                            const fetchedRestaurant = await getOneRestaurant(
-                                item.restaurantId.toString(),
-                                token
-                            );
+                            // This is intentional dont change its a miscommunicate from backend
+                            const fetchedUser = await getUserById(token, item.restaurantId);
+                            const fetchedRestaurant = await getOneRestaurant(fetchedUser.restaurant_id, token);
+                            console.log(fetchedRestaurant);
                             return { ...item, details: fetchedRestaurant };
                         } else if (item.userId) {
                             const fetchedUser = await getUserById(token, item.userId);
@@ -57,7 +62,6 @@ export default function ListRestaurant({
                 const itemsWithDetails = await Promise.all(promises);
                 const restaurants = itemsWithDetails.filter((item) => item.restaurantId);
                 const users = itemsWithDetails.filter((item) => item.userId);
-
                 setRestaurantsDetails(restaurants);
                 setUsersDetails(users);
             }
@@ -80,6 +84,22 @@ export default function ListRestaurant({
         setUsersDetails(users);
     };
 
+    const handleRoomSelected = (restaurant: { imageUrl: string, name: string } ) => {
+        // Update chatData state with restaurant details
+        onRoomSelected(restaurant);
+    };
+
+    // const handleRoomOnClick = (restaurantData: { imageUrl: string, name: string }) => {
+    //     onRoomSelected(restaurantData); // Emit selected restaurant data to parent component
+    // };
+
+    // restaurantsDetails.map((restaurant) => {
+    //     console.log(restaurant.details?.name, restaurant.details?.imageUrl);
+    //     return null; // Assuming you don't need to return a modified array
+    // });
+
+    // console.log(usersDetails + 'this is user detail')
+    // console.log(restaurantsDetails + 'this is restaurant detail')
     return (
         <div className="w-full h-full flex flex-col gap-3">
             <div className="px-3 flex gap-1 sm:max-xl:gap-0">
@@ -113,9 +133,16 @@ export default function ListRestaurant({
                     <div
                         key={restaurant.sessionId}
                         className="hover:bg-slate-100 p-3 flex gap-2 cursor-pointer"
-                        onClick={() => handleRoomClick(restaurant.sessionId)}
+                        onClick={() => {
+                            handleRoomClick(restaurant.sessionId),  
+                            handleRoomSelected({
+                                imageUrl: restaurant.details?.imageUrl || '',
+                                name: restaurant.details?.name || ''
+                            });
+                        }}
                     >
                         <div className="w-1/6 flex items-center">
+                            {restaurant.details?.imageUrl ? (
                             <Image
                                 src={restaurant.details?.imageUrl || '/img/user/user1.png'}
                                 alt="Restaurant Image"
@@ -124,6 +151,10 @@ export default function ListRestaurant({
                                 sizes="90"
                                 className="h-full object-contain rounded-full flex items-center"
                             />
+                            ) : 
+                            <div className="relative bg-stone-200 rounded-full bg-grey-200 border-4 border-stone-300 hover:border-redrice-yellow p-2 text-2xl hover:text-redrice-yellow">
+                                            <FaUserAlt color='grey'/>
+                            </div>} 
                         </div>
                         <div className="w-2/3 flex flex-col">
                             <h1 className="w-full line-clamp-1 text-redrice-yellow">
@@ -143,7 +174,13 @@ export default function ListRestaurant({
                     <div
                         key={user.sessionId}
                         className="hover:bg-slate-100 p-3 flex gap-2 cursor-pointer"
-                        onClick={() => handleRoomClick(user.sessionId)}
+                        onClick={() => {
+                            handleRoomClick(user.sessionId);                        
+                            handleRoomSelected({
+                                imageUrl: user.details?.imageUrl || '/img/user/user1.png',
+                                name: user.details?.name || 'Unknown'
+                            });                        
+                        }}
                     >
                         <div className="w-1/6 flex items-center">
                             <Image

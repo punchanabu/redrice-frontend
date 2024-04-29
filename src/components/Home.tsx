@@ -27,90 +27,90 @@ const Home = () => {
   };
 
   return (
-    <div className="p-20">
-      <motion.div
-        className="w-full min-h-[400px] flex justify-center items-center opacity-80 space-x-10"
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-      >
-        <motion.div
-          className="space-y-10 flex flex-col items-center"
-          variants={itemVariants}
-        >
-          <motion.h1
-            className="text-black text-6xl font-bold text-shadow opacity-100"
-            variants={itemVariants}
-          >
-            You Eat What You Get
-          </motion.h1>
-          <motion.p
-            className="text-gray-600 text-center text-2xl"
-            variants={itemVariants}
-          >
-            Discover a collection of simple and delicious recipes for every occasion.
-          </motion.p>
-          <motion.button
-            className="bg-gradient-to-r from-yellow-500 to-red-500 text-white p-5 rounded-2xl text-2xl font-bold"
-            variants={itemVariants}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-          >
-            <Link href="/restaurant">Book a Reservation</Link>
-          </motion.button>
-        </motion.div>
-      </motion.div>
-      <motion.div
-        className="mt-20 flex justify-center space-x-10"
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-      >
-        <motion.div
-          className="bg-white shadow-lg rounded-lg p-8 flex flex-col items-center space-y-10"
-          variants={itemVariants}
-          whileHover={{ scale: 1.05 }}
-        >
-          <Image src = {'/img/hamburger.svg'} alt="Recipe" width={100} height={100} />
-          <motion.h2
-            className="text-4xl font-bold mb-4"
-            variants={itemVariants}
-          >
-            Ease of Booking 
-          </motion.h2>
-          <motion.p
-            className="text-gray-600 text-center"
-            variants={itemVariants}
-          >
-            Discover a collection of simple and delicious recipes for every occasion.
-          </motion.p>
-        </motion.div>
-        <motion.div
-          className="bg-white shadow-lg rounded-lg p-8 flex flex-col items-center space-y-10"
-          variants={itemVariants}
-          whileHover={{ scale: 1.05 }}
-        >
-          <Image src = {'/img/drumstick.svg'} alt="Drumstick" width={100} height={100} />
-          <motion.h2
-            className="text-4xl font-bold mb-4"
-            variants={itemVariants}
-          >
-            Get Your Best Experience
-          </motion.h2>
-          <motion.p
-            className="text-gray-600 text-center"
-            variants={itemVariants}
-          >
-            Learn helpful tips and techniques to enhance your cooking skills.
-          </motion.p>
-        </motion.div>
-      </motion.div>
-      <motion.div
-        className="mt-20"
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-      >
+    <div className="p-6 md:p-10 lg:p-20">
+    <motion.div
+    className="w-full min-h-[300px] md:min-h-[400px] flex flex-col md:flex-row justify-center items-center opacity-80 space-y-10 md:space-y-0 md:space-x-10"
+    variants={containerVariants}
+    initial="hidden"
+    animate="visible"
+    >
+    <motion.div
+    className="space-y-6 md:space-y-10 flex flex-col items-center text-center md:text-left"
+    variants={itemVariants}
+    >
+    <motion.h1
+    className="text-black text-4xl md:text-6xl font-bold text-shadow opacity-100"
+    variants={itemVariants}
+    >
+    You Eat What You Get
+    </motion.h1>
+    <motion.p
+    className="text-gray-600 text-lg md:text-2xl"
+    variants={itemVariants}
+    >
+    Discover a collection of simple and delicious recipes for every occasion.
+    </motion.p>
+    <motion.button
+    className="bg-gradient-to-r from-yellow-500 to-red-500 text-white p-4 md:p-5 rounded-2xl text-lg md:text-2xl font-bold"
+    variants={itemVariants}
+    whileHover={{ scale: 1.1 }}
+    whileTap={{ scale: 0.9 }}
+    >
+    <Link href="/restaurant">Book a Reservation</Link>
+    </motion.button>
+    </motion.div>
+    </motion.div>
+    <motion.div
+    className="mt-10 md:mt-20 grid grid-cols-1 md:grid-cols-2 gap-10"
+    variants={containerVariants}
+    initial="hidden"
+    animate="visible"
+    >
+    <motion.div
+    className="bg-white shadow-lg rounded-lg p-6 md:p-8 flex flex-col items-center space-y-6 md:space-y-10"
+    variants={itemVariants}
+    whileHover={{ scale: 1.05 }}
+    >
+    <Image src={'/img/hamburger.svg'} alt="Recipe" width={80} height={80} />
+    <motion.h2
+    className="text-2xl md:text-4xl font-bold mb-2 md:mb-4 text-center"
+    variants={itemVariants}
+    >
+    Ease of Booking
+    </motion.h2>
+    <motion.p
+    className="text-gray-600 text-center"
+    variants={itemVariants}
+    >
+    Discover a collection of simple and delicious recipes for every occasion.
+    </motion.p>
+    </motion.div>
+    <motion.div
+    className="bg-white shadow-lg rounded-lg p-6 md:p-8 flex flex-col items-center space-y-6 md:space-y-10"
+    variants={itemVariants}
+    whileHover={{ scale: 1.05 }}
+    >
+    <Image src={'/img/drumstick.svg'} alt="Drumstick" width={80} height={80} />
+    <motion.h2
+    className="text-2xl md:text-4xl font-bold mb-2 md:mb-4 text-center"
+    variants={itemVariants}
+    >
+    Get Your Best Experience
+    </motion.h2>
+    <motion.p
+    className="text-gray-600 text-center"
+    variants={itemVariants}
+    >
+    Learn helpful tips and techniques to enhance your cooking skills.
+    </motion.p>
+    </motion.div>
+    </motion.div>
+    <motion.div
+    className="mt-10 md:mt-20"
+    variants={containerVariants}
+    initial="hidden"
+    animate="visible"
+    >
         <motion.h2
           className="text-5xl font-bold text-center mb-10"
           variants={itemVariants}
@@ -118,7 +118,7 @@ const Home = () => {
           Trusted By
         </motion.h2>
         <motion.div
-          className="flex justify-center space-x-10"
+          className="justify-center lg:space-x-10 flex flex-wrap items-center"
           variants={itemVariants}
         >
           <motion.div

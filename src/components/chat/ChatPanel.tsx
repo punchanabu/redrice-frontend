@@ -1,7 +1,8 @@
-'use client';
+import { useEffect, useState } from "react";
+import { getUserById } from "@/lib/auth";
+import { getOneRestaurant } from "@/lib/restaurant";
 import { IoMdSend } from 'react-icons/io';
 import Image from 'next/image';
-import { useState } from 'react';
 import { IoIosArrowBack } from 'react-icons/io';
 import { useRef } from 'react';
 import io from 'socket.io-client';
@@ -13,10 +14,11 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';// Assuming utc.ts is in the same directory
 import timezone from 'dayjs/plugin/timezone';
 import { motion } from 'framer-motion';
-import { useEffect } from 'react';
+
 // Register the plugin
  
 import { RiH1 } from "react-icons/ri";
+import { FaUserAlt } from "react-icons/fa";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
@@ -40,6 +42,7 @@ interface ChatPanelProps {
     ) => void;
     socket: Socket | null;
     messageList: Message[] | string[];
+    chatData: { imageUrl: string, name: string };
     handleGetHistory: (sessionId: string, socket: Socket) => void;
     historyMessage: any[];
     userId:string;
@@ -52,7 +55,7 @@ export default function ChatPanel({
     handleSendMessage,
     socket,
     messageList,
-    handleGetHistory, historyMessage,userId,readyChat
+    handleGetHistory, historyMessage,userId,readyChat,chatData
 }: ChatPanelProps) {
     const [styleState, setStyleState] = useState(true);
     const [reservationState] = useState<boolean>(styleState);
@@ -73,6 +76,13 @@ export default function ChatPanel({
                 return 'bg-gray-800';
         }
     };
+
+    useEffect(() => {
+        if (!socket) return;
+        handleGetHistory(sessionId, socket);
+    }, [sessionId, socket]);
+
+   
 
     const sendMessage = () => {
         if (message == '' || !socket) {
@@ -112,13 +122,19 @@ export default function ChatPanel({
                     className="text-3xl text-white bg-slate-500 p-1 rounded-full sm:hidden hover:bg-slate-300"
                     onClick={() => setroomid('')}
                 ></IoIosArrowBack>
-                <Image
-                    src={'/img/user/user1.png'}
+                {chatData.imageUrl? (
+                    <Image
+                    src={chatData.imageUrl }
                     alt="Product Picture"
                     width={60}
                     height={60}
                     className="h-full object-contain rounded-full flex items-center "
-                />
+                    />
+                ) : (
+                    <div className="m-5 relative rounded-full bg-stone-200 border-stone-300 border-4 border-black hover:border-redrice-yellow p-2 text-2xl hover:text-redrice-yellow">
+                        <FaUserAlt color = "grey"/>
+                    </div>
+                )}
 
                 <h1 className="text-md sm:text-2xl semi-bold line-clamp-1">{sessionId}</h1>
                 <div
@@ -155,26 +171,7 @@ export default function ChatPanel({
         No chat available 
     </h1>)}
 
-                {/* {messageList.map((message, index) => (
-                    <div
-                        key={index}
-                        className="mb-4 py-2 px-4 bg-redrice-blue rounded-3xl text-white"
-                    >
-                        {typeof message === 'string' ? (
-                            <div>{message}</div>
-                        ) : (
-                            <>
-                                <div className="font-bold">
-                                    {message.fromUserId}
-                                </div>
-                                <div>{message.message}</div>
-                                <div className="text-sm text-gray-500">
-                                    {message.timeStamp}
-                                </div>
-                            </>
-                        )}
-                    </div>
-                ))} */}
+                
                 {historyMessage.map((msg, index) => (
                     <div key={index} >
                         {(Math.abs(parseInt(dayjs((((msg as Message).createdAt))).format('D')))-(parseInt(dayjs((((messageList as Message[])[index-1]?.createdAt))).format('D'))) >0 
@@ -222,11 +219,7 @@ export default function ChatPanel({
                     </div>
                 )}
                 <div className="w-[10%] flex items-center justify-end gap-2">
-                    <div></div>
-                    <IoMdSend
-                        className="text-2xl text-redrice-blue hover:text-sky-800"
-                        onClick={sendMessage}
-                    />
+                    <IoMdSend className="text-2xl text-redrice-blue hover:text-sky-800" onClick={sendMessage} />
                 </div>
             </div>
         </div>

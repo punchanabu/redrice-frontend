@@ -11,7 +11,12 @@ import { sessionRoom } from "@/types/chat";
 import { Socket } from "socket.io-client";
 import { getme } from "@/lib/auth";
 export default function Chat() {    
-    
+    const [chatData, setChatData] = useState<{ imageUrl: string, name: string }>({ imageUrl: '', name: '' });
+
+    const handleRoomSelected = (restaurantData: { imageUrl: string, name: string }) => {
+        setChatData(restaurantData);
+    };
+
     // State 
     // Room ID we are currently in
     const [roomID, setRoomID] = useState<string>("");
@@ -27,6 +32,8 @@ export default function Chat() {
     const [messageList, setMessageList] = useState<string[]>([])
 
     const [historyMessage, setHistoryMessage] = useState<any[]>([])
+
+    
 
     const { data: session } = useSession();
     const token = session?.user.token;
@@ -99,6 +106,8 @@ export default function Chat() {
         return data;
     }
 
+
+
     const handleJoin = (sessionId: string, socket: Socket) => {
         console.log(sessionId);
         socket.emit("join chat", sessionId);
@@ -151,10 +160,10 @@ export default function Chat() {
         
         <main className="w-full h-[calc(100%-96px)] flex">
             <div className={`sm:w-1/3 h-[100%] sm:border-t sm:border-r border-slate-300 pt-5 w-[100%] ${roomID!==''?'hidden sm:inline-block':'sm:inline-block'}`}>
-                <ListRestaurant  setroomid={setRoomID} data = {RoomList} handleJoin ={handleJoin} socket={socket} setMessageList = {setMessageList} readyChat={readyChat}></ListRestaurant>
+                <ListRestaurant  setroomid={setRoomID} data = {RoomList} handleJoin ={handleJoin} socket={socket} setMessageList = {setMessageList} readyChat={readyChat} onRoomSelected={handleRoomSelected}></ListRestaurant>
             </div>
             <div className={`sm:w-2/3 h-[100%] sm:border-t border-slate-300 w-[100%] ${roomID!==''?'inline-block ':'hidden sm:hidden'} `}>
-                <ChatPanel  setroomid={setRoomID} sessionId= {roomID} handleSendMessage={handleSendMessage} socket={socket} messageList = {messageList} handleGetHistory={handleGetHistory} historyMessage = {historyMessage} userId={userId} readyChat={readyChat}></ChatPanel>
+                <ChatPanel  setroomid={setRoomID} sessionId= {roomID} handleSendMessage={handleSendMessage} socket={socket} messageList = {messageList} chatData={chatData} handleGetHistory={handleGetHistory} historyMessage = {historyMessage} userId={userId} readyChat={readyChat}></ChatPanel>
             </div>
         </main>
   )
