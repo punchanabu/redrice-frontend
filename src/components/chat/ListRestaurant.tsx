@@ -120,11 +120,11 @@ export default function ListRestaurant({
 
                 {
                 readyChat  ? (<h1 className='text-center text-slate-500' >
-                    ...
+                   
                 </h1>)
                 :
                 (<h1 className='text-center text-slate-500'>
-                    This service is currently unavailable. Please try again in a few minutes.
+                    The service is currently unavailable. Please try again in 1,000 years.
                 </h1>)
             }
 

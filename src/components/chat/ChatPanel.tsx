@@ -152,7 +152,7 @@ export default function ChatPanel({
 
             {
                 readyChat ? (<h1 className='text-center text-slate-500' >
-                    y
+                    
                 </h1>)
                 :
                 (<h1 className='text-center text-slate-500 '>
