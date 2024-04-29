@@ -35,7 +35,7 @@ export default function ListRestaurant({
 
     const { data: session } = useSession();
     const token = session?.user.token;
-    console.log('socket  : ',socket);
+
     
 
     useEffect(() => {
@@ -100,6 +100,9 @@ export default function ListRestaurant({
 
     // console.log(usersDetails + 'this is user detail')
     // console.log(restaurantsDetails + 'this is restaurant detail')
+
+
+
     return (
         <div className="w-full h-full flex flex-col gap-3">
             <div className="px-3 flex gap-1 sm:max-xl:gap-0">
@@ -170,7 +173,7 @@ export default function ListRestaurant({
                     </div>
                 ))}
 
-                {/* {usersDetails.map((user) => (
+                {usersDetails.map((user) => (
                     <div
                         key={user.sessionId}
                         className="hover:bg-slate-100 p-3 flex gap-2 cursor-pointer"
@@ -202,7 +205,7 @@ export default function ListRestaurant({
                             <h1 className="text-slate-300 bold">{user.details?.time || 'N/A'}</h1>
                         </div>
                     </div>
-                ))} */}
+                ))}
 
             </div>
         </div>
