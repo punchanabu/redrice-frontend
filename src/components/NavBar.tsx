@@ -24,7 +24,9 @@ const Navbar = () => {
     const handleNotification = (message: any) => {
         console.log("Notification: ", message);
         setNotification(message);
-        setShowNotification(true);
+        setTimeout(() => {
+            setShowNotification(true);
+        }, 100);
     }
     const handleSocket = (socket: Socket) => {
         setSocket(socket);
@@ -82,16 +84,15 @@ const Navbar = () => {
 
     useEffect(() => {
         if (showNotification) {
-            const timer = setTimeout(() => {
-                setShowNotification(false);
-                setNotification("");
-            }, 3000); // Hide notification after 3 seconds
-
-            return () => {
-                clearTimeout(timer);
-            };
+          const timer = setTimeout(() => {
+            setShowNotification(false);
+          }, 3000);
+      
+          return () => {
+            clearTimeout(timer);
+          };
         }
-    }, [showNotification]);
+      }, [showNotification]);
 
     useEffect(() => {
         if (showNotification && notificationRef.current) {
@@ -122,10 +123,10 @@ const Navbar = () => {
     return (
         <nav className="relative">
             <div className='w-full'>
-            {showNotification && (
-                <Notification key={Number(showNotification)}/>
-            )}
-            </div>
+  {showNotification && (
+    <Notification key={Date.now()} />
+  )}
+</div>
             <div className="mx-auto px-4 md:px-6">
                 <div className="relative flex items-center justify-between h-24">
                     <div className="flex-1 flex items-center justify-between sm:items-stretch sm:justify-between">
