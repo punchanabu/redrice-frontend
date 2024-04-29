@@ -42,15 +42,18 @@ export default function Chat() {
     const [userId,setuserId]=useState('');
     const [readyChat,setreadyChat]=useState(false)
 
+
+    console.log('user id : ',userId);
     useEffect(() => {
         const fetchUsers = async () => {
-            if (session?.user.token) {
-                const user = await getme(session.user.token);
-                setuserId(user.id);
+            if (token) {
+                const user = await getme(token);
+                setuserId(user.ID);
+                console.log('test id from user : ',user);
             }
         };
         fetchUsers();
-    });
+    },[]);
     
     const handleGetHistory = async (sessionId: string,socket: Socket) => {
         socket.emit("chat history", sessionId)
@@ -111,6 +114,7 @@ export default function Chat() {
     const handleJoin = (sessionId: string, socket: Socket) => {
         console.log(sessionId);
         socket.emit("join chat", sessionId);
+        handleGetHistory(sessionId, socket);
         setMessageList([])
     }
 

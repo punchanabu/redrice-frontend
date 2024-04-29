@@ -109,11 +109,12 @@ export default function ChatPanel({
         }
     };
     //
-
+    console.log('userDetails :' ,userId);
+    console.log('history : ',historyMessage);
     useEffect(() => {
         if (!socket) return;
         handleGetHistory(sessionId, socket);
-    }, [sessionId, socket]);
+    }, [ socket,sessionId]);
 
     return (
         <div className="w-full h-full flex flex-col relative">
@@ -152,7 +153,7 @@ export default function ChatPanel({
 
             {
                 readyChat ? (<h1 className='text-center text-slate-500' >
-                    y
+                    
                 </h1>)
                 :
                 (<h1 className='text-center text-slate-500 '>
@@ -184,7 +185,7 @@ export default function ChatPanel({
                         
                         <ChatMessage
                         message={(msg as Message).msg}
-                        isSender={(msg as Message).senderId !==  ( userId)  }
+                        isSender={(msg as Message).senderId ==  ( userId)  }
                         timeStamp={(msg as Message).createdAt}
                         
                     />
