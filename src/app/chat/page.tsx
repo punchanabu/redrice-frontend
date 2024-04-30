@@ -10,6 +10,9 @@ import { CustomSocketOptions } from '@/types/chat';
 import { sessionRoom } from '@/types/chat';
 import { Socket } from 'socket.io-client';
 import { getme } from '@/lib/auth';
+
+
+
 import dayjs from 'dayjs';
 
 interface Message {
@@ -25,6 +28,7 @@ interface Noti {
     message: string;
     timeStamp: number;
 }
+
 
 export default function Chat() {
     const [chatData, setChatData] = useState<{
@@ -53,8 +57,8 @@ export default function Chat() {
     // Message List
     const [messageList, setMessageList] = useState<string[]>([]);
 
-    const [historyMessage, setHistoryMessage] = useState<any[]>([]);
-
+  
+  const [historyMessage, setHistoryMessage] = useState<any[]>([]);
 
     const { data: session } = useSession();
     const token = session?.user.token;
@@ -115,7 +119,7 @@ export default function Chat() {
         const newMessageList = messageList;
         newMessageList.push(message);
         setMessageList(newMessageList);
-        const newMessage = {
+      const newMessage = {
             id: '',
             msg: message.message as string,
             senderId: message.fromUserId as string,
@@ -194,7 +198,8 @@ export default function Chat() {
         socket.on('chat history', handleReceiveHistory);
         socket.on('error', handleError);
         socket.on('notification', handleNotification);
-        socket.emit('get my session');
+      socket.emit('get my session');
+
 
         socket.on('disconnect', handleDisconnect);
     }, [socket]);
