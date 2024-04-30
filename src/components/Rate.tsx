@@ -127,7 +127,7 @@ export function Rate({ restaurantId }: { restaurantId: number }) {
                 </button>
             </div>
 
-            <div className="mx-2 overflow-y-auto h-52">
+            <div className="mx-2 overflow-y-auto h-52" id='rate'>
                 {comments.length === 0 ? (
                     <div className="flex items-center justify-center h-full">
                         <p>No reviews available.</p>
