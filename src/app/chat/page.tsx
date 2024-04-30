@@ -11,6 +11,25 @@ import { sessionRoom } from '@/types/chat';
 import { Socket } from 'socket.io-client';
 import { getme } from '@/lib/auth';
 
+
+
+import dayjs from 'dayjs';
+
+interface Message {
+    id: string;
+    msg: string;
+    senderId: string;
+    createdAt: string;
+    updatedAt: string;
+}
+
+interface Noti {
+    fromUserId: string;
+    message: string;
+    timeStamp: number;
+}
+
+
 export default function Chat() {
     const [chatData, setChatData] = useState<{
         imageUrl: string;
@@ -38,7 +57,8 @@ export default function Chat() {
     // Message List
     const [messageList, setMessageList] = useState<string[]>([]);
 
-    const [historyMessage, setHistoryMessage] = useState<any[]>([]);
+  
+  const [historyMessage, setHistoryMessage] = useState<any[]>([]);
 
     const { data: session } = useSession();
     const token = session?.user.token;
@@ -99,7 +119,20 @@ export default function Chat() {
         const newMessageList = messageList;
         newMessageList.push(message);
         setMessageList(newMessageList);
+      const newMessage = {
+            id: '',
+            msg: message.message as string,
+            senderId: message.fromUserId as string,
+            createdAt: dayjs(new Date(message.timeStamp)).format(
+                'YYYY-MM-DDTHH:mm:ss.SSS[Z]'
+            ),
+            updatedAt: dayjs(new Date(message.timeStamp)).format(
+                'YYYY-MM-DDTHH:mm:ss.SSS[Z]'
+            ),
+        };
+            setHistoryMessage((prevHistory) => [...prevHistory, newMessage]);
     };
+
 
     const handleDisconnect = () => {
         console.log('Disconnected from socket');
@@ -139,6 +172,8 @@ export default function Chat() {
     };
 
     useEffect(() => {
+        // let socket;
+
         if (!socket) {
             if (process.env.NEXT_PUBLIC_SOCKET_URL) {
                 const socket = io(process.env.NEXT_PUBLIC_SOCKET_URL, {
@@ -163,7 +198,8 @@ export default function Chat() {
         socket.on('chat history', handleReceiveHistory);
         socket.on('error', handleError);
         socket.on('notification', handleNotification);
-        socket.emit('get my session', handleReceiveMessage);
+      socket.emit('get my session');
+
 
         socket.on('disconnect', handleDisconnect);
     }, [socket]);
