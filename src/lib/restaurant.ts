@@ -3,7 +3,7 @@ import axios from 'axios';
 const getOneRestaurant = async (id: string, token: string) => {
     try {
         const response = await axios.get(
-            `https://redrice-backend-go.onrender.com/api/v1/restaurants/${id}`,
+            `${process.env.BACKEND_URL}/restaurants/${id}`,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -22,7 +22,7 @@ const getOneRestaurant = async (id: string, token: string) => {
 const getAllRestaurant = async (token: string) => {
     try {
         const response = await axios.get(
-            'https://redrice-backend-go.onrender.com/api/v1/restaurants',
+            `${process.env.BACKEND_URL}/restaurants`,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -40,7 +40,7 @@ const getAllRestaurant = async (token: string) => {
 const createRestaurant = async (formData: FormData, token: string) => {
     try {
         const response = await axios.post(
-            'https://redrice-backend-go.onrender.com/api/v1/restaurants',
+            `${process.env.BACKEND_URL}/restaurants`,
             formData,
             {
                 headers: {
@@ -63,7 +63,7 @@ const updateRestaurant = async (
 ) => {
     try {
         const response = await axios.put(
-            `https://redrice-backend-go.onrender.com/api/v1/restaurants/${id}`,
+            `${process.env.BACKEND_URL}/restaurants/${id}`,
             formData,
             {
                 headers: {
@@ -82,7 +82,7 @@ const updateRestaurant = async (
 const deleteRestaurant = async (id: string, token: string) => {
     try {
         const response = await axios.delete(
-            `https://redrice-backend-go.onrender.com/api/v1/restaurants/${id}`,
+            `${process.env.BACKEND_URL}/restaurants/${id}`,
             {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -99,7 +99,7 @@ const deleteRestaurant = async (id: string, token: string) => {
 const getRestaurantById = async (id: string, token: string) => {
     try {
         const response = await axios.get(
-            `https://redrice-backend-go.onrender.com/api/v1/restaurants/${id}`,
+            `${process.env.BACKEND_URL}/restaurants/${id}`,
             {
                 headers: {
                     'Content-Type': 'application/json',
