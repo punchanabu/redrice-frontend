@@ -42,41 +42,47 @@ const RestaurantDetailPage = ({ params }: { params: { id: string } }) => {
 
     const Createchat = () => {
         // Flag to track connection status
-        let isConnected = false;
-        console.log('test token : ', token);
-        const socket = io('https://redrice-chat.onrender.com', {
-            transports: ['websocket'],
-            auth: {
-                token: token,
-            },
-        } as unknown as CustomSocketOptions);
-        // Function to handle socket connection
-        const connectSocket = () => {
-            // Connect only if not already connected
-            if (!isConnected) {
-                socket.connect();
-            }
-        };
+        if (process.env.SOCKET_URL) {
+            let isConnected = false;
+            console.log('test token : ', token);
 
-        socket.on('connect', () => {
-            console.log('Connected to the server');
-            isConnected = true; // Update connection status
-            socket.emit('get my session', (res: any) => {});
-            const restaurantId = params.id;
-            socket.emit('create chat', restaurantId);
+            const socket = io(process.env.SOCKET_URL, {
+                transports: ['websocket'],
+                auth: {
+                    token: token,
+                },
+            } as unknown as CustomSocketOptions);
 
-            socket.on('session', () => {});
+            // Function to handle socket connection
+            const connectSocket = () => {
+                // Connect only if not already connected
+                if (!isConnected) {
+                    socket.connect();
+                }
+            };
 
-            socket.on('error', (error) => {
-                console.error('Error occurred:', error);
+            socket.on('connect', () => {
+                console.log('Connected to the server');
+                isConnected = true; // Update connection status
+                socket.emit('get my session', (res: any) => {});
+                const restaurantId = params.id;
+                socket.emit('create chat', restaurantId);
+
+                socket.on('session', () => {});
+
+                socket.on('error', (error) => {
+                    console.error('Error occurred:', error);
+                });
+
+                // Redirect to /chat after successful connection
+                window.location.href = '/chat';
             });
 
-            // Redirect to /chat after successful connection
-            window.location.href = '/chat';
-        });
-
-        // Stage to check connection status before attempting to connect
-        connectSocket();
+            // Stage to check connection status before attempting to connect
+            connectSocket();
+        } else {
+            console.error('SOCKET_URL environment variable is not defined.');
+        }
     };
 
     console.log(restaurant);
