@@ -14,7 +14,7 @@ export const createCommentAndRating = async (
     try {
         
         const response = await axios.post(
-            `https://redrice-backend-go.onrender.com/api/v1/comments`,
+            `${process.env.BACKEND_URL}/comments`,
             {
                 ...commentRequest
             },
