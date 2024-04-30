@@ -84,8 +84,8 @@ export default function CardReservation({
 
     return (
         <div className="h-[15%] w-[90%] rounded-lg shadow-md m-1 flex flex-row hover:bg-slate-100">
-            {trueSubmit && <Alert severity="success">Success Review</Alert>}
-            {falseSubmit && <Alert severity="error">Failed Review</Alert>}
+            {trueSubmit && <Alert id="success-alert" severity="success">Success Review</Alert>}
+            {falseSubmit && <Alert id="error-alert" severity="error">Failed Review</Alert>}
             <div className="w-[45px] h-[45px] relative rounded-lg  p-5 m-5 ml-5 mr-5  self-center ">
                 <Image
                     src={picture}
@@ -102,6 +102,7 @@ export default function CardReservation({
                     <button
                         className="bg-blue-500 text-white rounded-2xl px-3 py-1 mr-3"
                         onClick={openForm}
+                        id='reviewButton'
                     >
                         Review
                     </button>
