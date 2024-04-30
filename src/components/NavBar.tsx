@@ -8,7 +8,7 @@ import { getme } from '@/lib/auth';
 import { signOut } from 'next-auth/react';
 import { FiLogOut } from 'react-icons/fi';
 import { FaUserAlt } from 'react-icons/fa';
-import { AiFillMessage } from "react-icons/ai";
+import { AiFillMessage } from 'react-icons/ai';
 import { Howl } from 'howler';
 import { Socket, io } from 'socket.io-client';
 import Notification from './Notification';
@@ -22,24 +22,24 @@ const Navbar = () => {
     const notificationRef = useRef<HTMLDivElement>(null);
 
     const handleNotification = (message: any) => {
-        console.log("Notification: ", message);
+        console.log('Notification: ', message);
         setNotification(message);
         setTimeout(() => {
             setShowNotification(true);
         }, 100);
-    }
+    };
     const handleSocket = (socket: Socket) => {
         setSocket(socket);
         console.log('Connect to the socket');
-    }
+    };
 
     const handleConnection = () => {
         console.log('Connecting to socket successfully!');
-    }
+    };
 
     const handleDisconnect = () => {
-        console.log("Disconnected from socket");
-    }
+        console.log('Disconnected from socket');
+    };
     const sound = new Howl({
         src: ['/sound/pop.mp3'],
         volume: 0.5,
@@ -47,7 +47,7 @@ const Navbar = () => {
 
     const playSound = () => {
         sound.play();
-    }
+    };
 
     const toggleNavbar = () => {
         setIsOpen(!isOpen);
@@ -60,39 +60,41 @@ const Navbar = () => {
             setLogin(true);
         }
     }, [session]);
-    
-    useEffect(() => {
 
-        if (!socket) {
-            const socket = io('https://redrice-chat.onrender.com', {
-                transports: ["websocket"],
-                auth: {
-                    token: session?.user.token,
-                },
-            });
-            handleSocket(socket);
+    useEffect(() => {
+        if (process.env.NEXT_PUBLIC_SOCKET_URL) {
+            if (!socket) {
+                const socket = io(process.env.NEXT_PUBLIC_SOCKET_URL, {
+                    transports: ['websocket'],
+                    auth: {
+                        token: session?.user.token,
+                    },
+                });
+                handleSocket(socket);
+            }
+        } else {
+            console.error('SOCKET_URL environment variable is not defined.');
         }
 
         if (!socket) return;
 
         socket.on('connect', handleConnection);
-        socket.on('notification', handleNotification)
+        socket.on('notification', handleNotification);
 
-        socket.on('disconnect', handleDisconnect)
+        socket.on('disconnect', handleDisconnect);
     }, [socket]);
-
 
     useEffect(() => {
         if (showNotification) {
-          const timer = setTimeout(() => {
-            setShowNotification(false);
-          }, 3000);
-      
-          return () => {
-            clearTimeout(timer);
-          };
+            const timer = setTimeout(() => {
+                setShowNotification(false);
+            }, 3000);
+
+            return () => {
+                clearTimeout(timer);
+            };
         }
-      }, [showNotification]);
+    }, [showNotification]);
 
     useEffect(() => {
         if (showNotification && notificationRef.current) {
@@ -122,11 +124,9 @@ const Navbar = () => {
     });
     return (
         <nav className="relative">
-            <div className='w-full'>
-  {showNotification && (
-    <Notification key={Date.now()} />
-  )}
-</div>
+            <div className="w-full">
+                {showNotification && <Notification key={Date.now()} />}
+            </div>
             <div className="mx-auto px-4 md:px-6">
                 <div className="relative flex items-center justify-between h-24">
                     <div className="flex-1 flex items-center justify-between sm:items-stretch sm:justify-between">
@@ -175,26 +175,23 @@ const Navbar = () => {
                                         Restaurant
                                     </Link>
 
-                                    <Link
-                                        href={'/chat'}
-                                        onClick={playSound}
-                                    >
+                                    <Link href={'/chat'} onClick={playSound}>
                                         <div className="relative rounded-full hover:border-redrice-yellow p-2 text-3xl hover:text-redrice-yellow ">
-                                            <AiFillMessage color='rgb(68 64 60)' />
+                                            <AiFillMessage color="rgb(68 64 60)" />
                                         </div>
                                     </Link>
 
-                                    <Link
-                                        href={'/profile'}
-                                        onClick={playSound}
-                                    >
+                                    <Link href={'/profile'} onClick={playSound}>
                                         <div className="relative bg-stone-200 rounded-full bg-grey-200 border-4 border-stone-300 hover:border-redrice-yellow p-2 text-2xl hover:text-redrice-yellow">
-                                            <FaUserAlt color='grey' />
+                                            <FaUserAlt color="grey" />
                                         </div>
                                     </Link>
                                     <button
                                         title="Sign Out"
-                                        onClick={() => { handleSignOut(); playSound(); }}
+                                        onClick={() => {
+                                            handleSignOut();
+                                            playSound();
+                                        }}
                                         className="rounded-lg text-xl lg:text-xl font-semibold hover:text-white bg-redrice-yellow hover:bg-redrice-light-yellow p-2 text-white"
                                     >
                                         <FiLogOut />

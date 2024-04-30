@@ -54,7 +54,7 @@ export default function Chat() {
     const [messageList, setMessageList] = useState<string[]>([]);
 
     const [historyMessage, setHistoryMessage] = useState<any[]>([]);
-    const [messageAvailable, setMessageAvailable] = useState<Boolean>(true);
+
 
     const { data: session } = useSession();
     const token = session?.user.token;
@@ -85,11 +85,6 @@ export default function Chat() {
     };
     const handleNotification = (message: string) => {
         console.log('receive notification', message);
-
-        // const newMessage ={id:'',msg:(message.message),senderId:(message.fromUserId as string),createdAt:dayjs(new Date(message.timeStamp)).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]'),updatedAt:dayjs(new Date(message.timeStamp)).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]')};
-        // // console.log('test receive :',messageList);
-        // // console.log('test date : ',dayjs(new Date(message.timeStamp)).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]'));
-        // setHistoryMessage((prevHistory) => [...prevHistory, newMessage]);
     };
 
     const handleRoomChange = (roomid: string) => {
@@ -134,6 +129,7 @@ export default function Chat() {
             setHistoryMessage((prevHistory) => [...prevHistory, newMessage]);
     };
 
+
     const handleDisconnect = () => {
         console.log('Disconnected from socket');
         setreadyChat(false);
@@ -169,34 +165,25 @@ export default function Chat() {
         socket.emit('send message', messageRequest);
 
         console.log(message);
-
-        const newMessage = {
-            id: '',
-            msg: message,
-            senderId: userId,
-            createdAt: dayjs(
-                new Date(new Date().getTime() + 7 * 60 * 60 * 1000)
-            ).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]'),
-            updatedAt: new Date(new Date().getTime() + 7 * 60 * 60 * 1000)
-                .toISOString,
-        };
-        
-        // setHistoryMessage((prevHistory) => [...prevHistory, newMessage]);
     };
 
     useEffect(() => {
-        let socket;
+        // let socket;
 
         if (!socket) {
-            socket = io('https://redrice-chat.onrender.com/', {
-                transports: ['websocket'],
-                auth: {
-                    token: token,
-                },
-            });
-            handleSocket(socket);
-        } else {
-            console.error('SOCKET_URL environment variable is not defined.');
+            if (process.env.NEXT_PUBLIC_SOCKET_URL) {
+                const socket = io(process.env.NEXT_PUBLIC_SOCKET_URL, {
+                    transports: ['websocket'],
+                    auth: {
+                        token: token,
+                    },
+                });
+                handleSocket(socket);
+            } else {
+                console.error(
+                    'SOCKET_URL environment variable is not defined.'
+                );
+            }
         }
 
         if (!socket) return;
@@ -208,21 +195,9 @@ export default function Chat() {
         socket.on('error', handleError);
         socket.on('notification', handleNotification);
         socket.emit('get my session');
-        socket.on('disconnect', handleDisconnect);
 
-        return () => {
-            if (socket) {
-                socket.off('connect', handleConnection);
-                socket.off('session', handleSession);
-                socket.off('receive message', handleReceiveMessage);
-                socket.off('chat history', handleReceiveHistory);
-                socket.off('error', handleError);
-                socket.off('notification', handleNotification);
-                socket.off('disconnect', handleDisconnect);
-                socket.disconnect();
-            }
-        };
-    }, [token]);
+        socket.on('disconnect', handleDisconnect);
+    }, [socket]);
 
     return (
         <main className="w-full h-[calc(100%-96px)] flex">

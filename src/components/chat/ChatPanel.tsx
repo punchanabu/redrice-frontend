@@ -175,7 +175,7 @@ export default function ChatPanel({
                     </h1>
                 ) : (
                     <div className="text-center text-slate-500">
-                        <CircularProgress />
+                       ข้อความล่าสุด
                     </div>
                 )}
 

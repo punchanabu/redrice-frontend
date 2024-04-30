@@ -4,7 +4,7 @@ import { FormData } from '@/components/auth/RegisterForm';
 const register = async (formData: FormData) => {
     try {
         const response = await axios.post(
-            'https://redrice-backend-go.onrender.com/api/v1/auth/register',
+            `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/register`,
             formData,
             {
                 headers: {
@@ -21,7 +21,7 @@ const register = async (formData: FormData) => {
 const login = async (email: string, password: string) => {
     try {
         const response = await axios.post(
-            'https://redrice-backend-go.onrender.com/api/v1/auth/signin',
+            `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/signin`,
             { email, password },
             {
                 headers: {
@@ -38,7 +38,7 @@ const login = async (email: string, password: string) => {
 const getme = async (token: string) => {
     try {
         const response = await axios.get(
-            'https://redrice-backend-go.onrender.com/api/v1/me',
+            `${process.env.NEXT_PUBLIC_BACKEND_URL}/me`,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -57,7 +57,7 @@ const getme = async (token: string) => {
 const getusers = async (token: string) => {
     try {
         const response = await axios.get(
-            'https://redrice-backend-go.onrender.com/api/v1/users',
+            `${process.env.NEXT_PUBLIC_BACKEND_URL}/users`,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -75,7 +75,7 @@ const getusers = async (token: string) => {
 const getUserById = async (token: string, id: string) => {
     try {
         const response = await axios.get(
-            `https://redrice-backend-go.onrender.com/api/v1/users/${id}`,
+            `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/${id}`,
             {
                 headers: {
                     'Content-Type': 'application/json',

@@ -13,7 +13,7 @@ describe('register', () => {
     });
 
     const formData: FormData = {
-      username: 'testUser',
+      name: 'testUser',
       email: 'testPassword',
       telephone: '1234567890',
       password: 'testPassword',
@@ -24,7 +24,7 @@ describe('register', () => {
 
     // Expect the Axios post method to have been called with the correct URL and formData
     expect(mockedAxios.post).toHaveBeenCalledWith(
-      'https://redrice-backend-go.onrender.com/api/v1/auth/register',
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/register`,
       formData,
       {
         headers: {
