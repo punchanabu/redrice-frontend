@@ -22,7 +22,7 @@ const CreateReservationPage = ({ params }: { params: { id: string } }) => {
             if (!session?.user.token || !params.id) return;
             try {
                 const response = await axios.get(
-                    `${process.env.BACKEND_URL}/restaurants/${params.id}`,
+                    `${process.env.NEXT_PUBLIC_BACKEND_URL}/restaurants/${params.id}`,
                     {
                         headers: {
                             Authorization: `Bearer ${session.user.token}`,

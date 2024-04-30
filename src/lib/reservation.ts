@@ -3,7 +3,7 @@ import axios from 'axios';
 const getAllResvation = async (token: string) => {
     try {
         const response = await axios.get(
-            `${process.env.BACKEND_URL}/reservations`,
+            `${process.env.NEXT_PUBLIC_BACKEND_URL}/reservations`,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -21,7 +21,7 @@ const getAllResvation = async (token: string) => {
 const getReservationByIdUser = async (token: string,id:string) => {
     try {
         const response = await axios.get(
-            `${process.env.BACKEND_URL}/users/${id}/reservations`,
+            `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/${id}/reservations`,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -55,7 +55,7 @@ const createReservation = async (
         const dateTimeISO = convertTimeToISO(reservationRequest.dateTime);
         const exitTimeISO = convertTimeToISO(reservationRequest.exitTime);
         const response = await axios.post(
-            `${process.env.BACKEND_URL}/reservations`,
+            `${process.env.NEXT_PUBLIC_BACKEND_URL}/reservations`,
             {
                 ...reservationRequest,
                 dateTime: dateTimeISO,
@@ -77,7 +77,7 @@ const createReservation = async (
 const getMyReservations = async (token: string) => {
     try {
         const user = await axios.get(
-            `${process.env.BACKEND_URL}/me`,
+            `${process.env.NEXT_PUBLIC_BACKEND_URL}/me`,
             {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -87,7 +87,7 @@ const getMyReservations = async (token: string) => {
         
         const id = user.data.ID;
         const response = await axios.get(
-            `${process.env.BACKEND_URL}/users/${id}/reservations`,
+            `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/${id}/reservations`,
             {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -105,7 +105,7 @@ const getMyReservations = async (token: string) => {
 const deleteReservation = async (token: string, reservationId: number) => {
     try {
         const response = await axios.delete(
-            `${process.env.BACKEND_URL}/reservations/${reservationId}`,
+            `${process.env.NEXT_PUBLIC_BACKEND_URL}/reservations/${reservationId}`,
             {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -124,7 +124,7 @@ const updateReservation = async (token: string, id: string, dateTime: any, table
     try {
 
         const response = await axios.put(
-            `${process.env.BACKEND_URL}/reservations/${id}`,
+            `${process.env.NEXT_PUBLIC_BACKEND_URL}/reservations/${id}`,
             {
                 dateTime: convertTimeToISO(dateTime),
                 tableNum: tableNum,

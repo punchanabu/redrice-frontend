@@ -62,9 +62,9 @@ const Navbar = () => {
     }, [session]);
 
     useEffect(() => {
-        if (process.env.SOCKET_URL) {
+        if (process.env.NEXT_PUBLIC_SOCKET_URL) {
             if (!socket) {
-                const socket = io(process.env.SOCKET_URL, {
+                const socket = io(process.env.NEXT_PUBLIC_SOCKET_URL, {
                     transports: ['websocket'],
                     auth: {
                         token: session?.user.token,

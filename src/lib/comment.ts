@@ -14,7 +14,7 @@ export const createCommentAndRating = async (
     try {
         
         const response = await axios.post(
-            `${process.env.BACKEND_URL}/comments`,
+            `${process.env.NEXT_PUBLIC_BACKEND_URL}/comments`,
             {
                 ...commentRequest
             },

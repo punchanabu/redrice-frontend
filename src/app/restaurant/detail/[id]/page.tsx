@@ -42,11 +42,11 @@ const RestaurantDetailPage = ({ params }: { params: { id: string } }) => {
 
     const Createchat = () => {
         // Flag to track connection status
-        if (process.env.SOCKET_URL) {
+        if (process.env.NEXT_PUBLIC_SOCKET_URL) {
             let isConnected = false;
             console.log('test token : ', token);
 
-            const socket = io(process.env.SOCKET_URL, {
+            const socket = io(process.env.NEXT_PUBLIC_SOCKET_URL, {
                 transports: ['websocket'],
                 auth: {
                     token: token,
@@ -84,7 +84,6 @@ const RestaurantDetailPage = ({ params }: { params: { id: string } }) => {
             console.error('SOCKET_URL environment variable is not defined.');
         }
     };
-
     console.log(restaurant);
     return (
         <div>

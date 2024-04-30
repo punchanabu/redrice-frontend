@@ -24,7 +24,7 @@ describe('register', () => {
 
     // Expect the Axios post method to have been called with the correct URL and formData
     expect(mockedAxios.post).toHaveBeenCalledWith(
-      `${process.env.BACKEND_URL}/auth/register`,
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/register`,
       formData,
       {
         headers: {
