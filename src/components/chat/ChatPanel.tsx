@@ -165,7 +165,7 @@ export default function ChatPanel({
             <div className="w-full h-[calc(100%-136px)] py-2 px-4 overflow-y-auto">
             {historyMessage.length > 0 ? (
         <h1 className="text-center text-slate-500">
-            {dayjs((((messageList as Message[])[0]?.createdAt))).format('D MMM YYYY')}
+            {dayjs((((historyMessage as Message[])[0]?.createdAt))).format('D MMM YYYY')}
           
         </h1>
     ) : (<h1 className='text-center text-slate-500'>
@@ -175,9 +175,8 @@ export default function ChatPanel({
                 
                 {historyMessage.map((msg, index) => (
                     <div key={index} >
-                        {(Math.abs(parseInt(dayjs((((msg as Message).createdAt))).format('D')))-(parseInt(dayjs((((messageList as Message[])[index-1]?.createdAt))).format('D'))) >0 
+                        {(Math.abs(parseInt(dayjs((((msg as Message).createdAt))).format('D')))-(parseInt(dayjs((((historyMessage as Message[])[index-1]?.createdAt))).format('D'))) >0 
                         && <div>
-          
                             <h1 className="text-center text-slate-500">{dayjs((((msg as Message).createdAt))).format('D MMM YYYY')}</h1> 
                         </div>
                          )
